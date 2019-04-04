@@ -1,8 +1,8 @@
 <template>
-  <div class="login">
-    <!-- <div class="login_logo">
+  <div class="login" v-title data-title="登录">
+    <div class="login_logo">
 			<img class="logo" src="../../assets/logo.png" />
-		</div> -->
+		</div>
     <div class="login_container">
       <div class="login_container_shouji">
         <i class="iconfont icon-shouji"/>
@@ -12,7 +12,7 @@
           value=""
           v-model="phoneNumber"
           v-verify="phoneNumber"
-          maxlength="11" >
+          maxlength="11" style="height: 35px;font-size: 16px">
       </div>
       <div class="login_container_jianpan">
         <i class="iconfont icon-jianpan"/>
@@ -22,15 +22,16 @@
           value=""
           v-model="verfifyCode"
           v-verify="verfifyCode"
-          maxlength="4" >
+          maxlength="6"  style="height: 35px;font-size: 16px">
         <button :disabled="!verificationDisabled || time > 0"
-          @click.stop.prevent="getVerification">{{ verification }}</button>
+          @click.stop.prevent="getVerification" class="fontSize" style="padding-top: 10px">{{ verification }}</button>
       </div>
+
     </div>
     <div class="login_footer">
       <div class="login_footer_agreement">
-        点击登录，即表示您同意
-        <router-link to="/agreement">用户协议</router-link>
+        点击登录，即表示您同意用户协议
+        <!--<router-link to="/agreement">用户协议</router-link>-->
       </div>
       <mt-button class="loginButton"
         type="primary"
@@ -38,18 +39,24 @@
         :disabled="loginDisabled"
         @click="login">登录</mt-button>
     </div>
+    <div style="height: 150px">
+
+    </div>
   </div>
 </template>
 
 <script type="application/ecmascript">
 import { LOGIN } from '@/store/types';
+import {sendVerifyCode,sendLogin} from '../../js/api';
+
 export default {
   name: '',
   data() {
     return {
       phoneNumber: '',
       time: 0,
-      verfifyCode: ''
+      verfifyCode: '',
+      verifyCodeTip:'',//验证码提示,
     };
   },
   verify: {
@@ -70,7 +77,7 @@ export default {
         message: '请正确输入验证码'
       },
       {
-        minLength: 4
+        minLength: 6
       }
     ]
   },
@@ -97,21 +104,32 @@ export default {
     getVerification() {
       this.time = 60;
       this.timer();
-      //				this.axios.get(api.repo_list)
-      //					.then(response => {
-      //						this.$toast('已发送验证码')
-      //
-      //					})
-      //					.catch(error => {
-      //						this.$toast(error)
-      //						this.time = 60
-      //						this.timer()
-      //					})
+      //sendVerifyCode();
+      //var result =  sendVerifyCode(this.phoneNumber);
+      this.axios.post("/sendVerifyCode", {phone: this.phoneNumber})
+        .then(response => {
+        console.log("ok" + response.data)
+
+    })
+    .catch(error => {
+        console.log("error" + error)
+    })
     },
     login() {
       if (this.$verify.check()) {
-        this.$router.push('/homePage');
-        this.$store.dispatch(LOGIN, 'token');
+        console.log("sendLogin")
+        this.axios.post("/login", {"phone": this.phoneNumber,
+            "code": this.verfifyCode,})
+          .then(response => {
+            console.log("ok" + response);
+            this.$router.push('/userInfo');
+            this.$store.dispatch(LOGIN, 'token');
+          })
+          .catch(error => {
+             console.log("error" + error)
+          })
+      } else {
+        console.log("error")
       }
     }
   }
@@ -120,21 +138,28 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+  .fontSize {
+    font-size: 16px;
+  }
 .login {
+  background-color: #FFFFFF;
   padding-top: 20px;
   .login_logo {
     width: 200px;
-    margin: 80px auto;
+    margin: 1px auto;
     .logo {
       width: 100%;
     }
   }
   .login_container {
-    padding: 10px;
+    div, p, span {
+      font-family: Helvetica Neue, Tahoma, Arial;
+    };
     input {
       border: none;
       /*border-left: 1px solid grey;*/
       margin-left: 10px;
+      font-size: 16px;
     }
     input:focus {
       outline: none;
@@ -170,7 +195,7 @@ export default {
     padding: 15px;
     .login_footer_agreement {
       text-align: center;
-      font-size: 12px;
+      font-size: 16px;
       color: grey;
       a {
         color: rgb(251, 0, 0);
@@ -184,12 +209,14 @@ export default {
 				margin-top:10px;
 				text-align:center;
 			}*/
+/*
     .loginButton {
       background: rgb(251, 0, 0);
     }
     .loginButton:disabled {
       background: rgba(251, 0, 0, 0.5);
     }
+    */
   }
 }
 </style>
