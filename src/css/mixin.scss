@@ -1,0 +1,287 @@
+$blue: #3190e8;
+$bc: #e4e4e4;
+$fc:#ffffff;
+//使用与需要突出标注的文字，以及按钮，icon
+$c_e64949:#e64949;
+$red:#f7b619;
+//使用于标题或者较重要文字
+$gy:#333333;
+//使用广泛，多用于大篇幅内容文字等
+$bl:#666;
+//次级，多用于提示性文字
+$sec:#999999;
+//适用于所有内容列表下划线颜色
+$bor:#e1e1e1;
+//使用与整体大背景颜色
+$bac:#f0f0f0;
+$c_f8f8f8:#f8f8f8;
+//少数背景色
+$c_f5f5f5:#f5f5f5;
+$cw:#fafafa;
+$pink:#F76465;
+$pinkRed:#f7b619;
+$red_f64f4f:#f7b619;
+$lightRed:#F75E5E;
+$blue:#00a0e9;
+$deepBlue:#188eff;
+$lightBlue:#5088fb;
+$c_f95656:#f95656;
+$c_eeeeee:#eeeeee;
+$c_d8d8d8:#d8d8d8;
+$c_aaaaaa:#aaaaaa;
+$c_51c7a1:#51c7a1;
+$c_f7b619:#f7b619;
+$c_ededed:#ededed;
+$c_d7d7d6:#d7d7d6;
+$c_fce2a3:#fce2a3;
+$c_f73819:#f73819;
+$c_747474:#747474;
+$c_f6f6f6:#f6f6f6;
+$c_c5860c:#c5860c;
+$c_f9cc5e:#f9cc5e;
+$c_ff4747:#ff4747;
+$c_ff2284:#ff2284;
+$c_05aae4:#05aae4;
+$c_ff6161:#ff6161;
+$c_e2ac2d:#e2ac2d;
+$c_d32e2e:#d32e2e;
+$c_ff5d54:#ff5d54;
+$c_f8c8c8c:#8c8c8c;
+$c_f6f8fc:#f6f8fc;
+$c_5f6c85:#5f6c85;
+$c_888888:#888888;
+$c_ff7c00:#ff7c00;
+$c_b4b4b9:#b4b4b9;
+$c_f44040:#f44040;
+$c_dfdfdf:#dfdfdf;
+$c_1972f7:#1972f7;
+$c_451700:#451700;
+$c_e2a114:#e2a114;
+$c_fff28f:#fff28f;
+$c_e9444f:#e9444f;
+$c_575757:#575757;
+$c_fed97e:#fed97e;
+$c_efaa0c:#efaa0c;
+$c_f8be30:#f8be30;
+$c_f4f4f4:#f4f4f4;
+$c_e95098:#e95098;
+$c_FDD1E8:#FDD1E8;
+$c_9d4675:#9d4675;
+$c_f1eeee:#f1eeee;
+$c_ccc:#ccc;
+$c_000:#000;
+$c_dad8d8:#dad8d8;
+$c_fdb5b5:#fdb5b5;
+$c_f14f50:#f14f50;
+$c_5d5d5d:#5d5d5d;
+$c_afafaf:#afafaf;
+$c_5e5e5e:#5e5e5e;
+$c_e6e6e6e:#e6e6e6;
+$c_d99d14:#d99d14;
+$c_dfed97e:#fed97e;
+$c_b4b3b3:#b4b3b3;
+$c_f14f50:#f14f50;
+$c_dedcdc:#dedcdc;
+$c_e5e5e5:#e5e5e5;
+$c_eae9e9:#eae9e9;
+$c_d8d7d8:#d8d7d8;
+$c_7a7a7a:#7a7a7a;
+$c_747474:#747474;
+$c_7979696:#979696;
+$c_f2f2f2:#f2f2f2;
+$c_dfa541:#dfa541;
+$c_f3f3f4:#f3f3f4;
+$c_fbd66b:#fbd66b;
+$c_4d2d18:#4d2d18;
+$c_fdb609:#fdb609;
+$c_fffbec:#fffbec;
+$c_cbb7a4:#cbb7a4;
+$c_c79f7a:#c79f7a;
+$c_fed570:#fed570;
+$c_feebb9:#feebb9;
+$c_fdeccd:#fdeccd;
+$c_979797:#979797;
+$c_f9c546:#f9c546;
+$f0:0.9rem;
+//一般用于正标题
+$f1:0.8rem;
+//一般用于副标题
+$f2:0.7rem;
+//一般用于大幅文字
+$f3:0.6rem;
+$f4:0.5rem;
+$f5:0.68rem;
+$f6:0.38rem;
+$f7:0.55rem;
+@mixin alertFirmBut{
+	@include sc($f2,$fc);
+	background-color: $c_f7b619;
+	line-height:1.65rem;
+	border: 1px;
+	border-radius: 0.15rem;
+	text-align: center;
+}
+@mixin alertFirmBut2{
+	@include sc($f2,$fc);
+	background-color: $c_f7b619;
+	line-height:1.65rem;
+	border: 1px;
+	border-radius: 0.15rem;
+	text-align: center;
+}
+@mixin alertGray{
+	@include sc($f2,$fc);
+	background-color: $bl;
+	line-height:1.65rem;
+	border: 1px;
+	border-radius: 0.15rem;
+	text-align: center;
+}
+@mixin firmBut{
+	@include sc($f1,$fc);
+	background-color: $red;
+	line-height:1.95rem;
+	border: 1px;
+	border-radius: 0.15rem;
+	text-align: center;
+}
+@mixin pinkBut{
+	@include sc($f1,$fc);
+	background-color: $pink;
+	line-height:1.95rem;
+	border: 1px;
+	border-radius: 0.15rem;
+	text-align: center;
+}
+@mixin gray{
+	@include sc($f1,$fc);
+	background-color: $bl;
+	line-height:1.95rem;
+	border: 1px;
+	border-radius: 0.15rem;
+	text-align: center;
+}
+
+//网络提示框位置
+@mixin loadCenter{
+	position: fixed;
+	top:50%;
+	left:50%;
+	margin-left: -15px;
+}
+// 背景图片地址和大小
+@mixin bis($url) {
+	background-image: url($url);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+}
+
+@mixin borderRadius($radius) {
+    -webkit-border-radius: $radius;
+    -moz-border-radius: $radius;
+    -ms-border-radius: $radius;
+    -o-border-radius: $radius;
+    border-radius: $radius;
+}
+//定位全屏
+@mixin allcover{
+	position:absolute;
+	top:0;
+	right:0;
+}
+
+//定位上下左右居中
+@mixin center {
+	position: absolute;
+	top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+//定位上下居中
+@mixin ct {
+	position: absolute;
+	top: 50%;
+    transform: translateY(-50%);
+}
+
+//定位上下居中
+@mixin cl {
+	position: absolute;
+	left: 50%;
+    transform: translateX(-50%);
+}
+
+//宽高
+@mixin wh($width, $height){
+	width: $width;
+	height: $height;
+}
+
+//字体大小、行高、字体
+@mixin font($size, $line-height, $family: 'arial') {
+	font: #{$size}/#{$line-height} $family;
+}
+
+//字体大小，颜色
+@mixin sc($size, $color){
+	font-size: $size;
+	color: $color;
+}
+
+//flex 布局和 子元素 对其方式
+@mixin fj($type: space-between){
+	display: flex;
+	justify-content: $type;
+}
+//红色圆点
+@mixin redCricle{
+	border-radius:50%;
+	background: $c_f73819;
+}
+//
+@mixin overstepOne{
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	letter-spacing: 0.06em;//设置字与字之间的间距
+	text-align: left;
+}
+@mixin overstepTwo{
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	overflow: hidden;
+	letter-spacing: 0.06em;//设置字与字之间的间距
+}
+@mixin redLine{
+	@include sc($f1,$red);
+	font-weight: bold;
+}
+@mixin shadow{
+  box-shadow: 0px 2px 8px #e4e4e4;
+}
+@mixin shadow2{
+  box-shadow: 0px 0px 10px #ededee;
+}
+@mixin shadow3{
+  box-shadow: 0px 0px 20px #d8d8d9;
+  //box-shadow: 0px 0px 20px #f00;
+}
+$fontSize:23.4375;
+html{font-size:$fontSize;}
+@function r($px){
+  @return $px/2/$fontSize+rem;
+}
+@mixin setPm($name,$val...){
+  $max:length($val); //4
+  $str:'';
+  @for $i from 1 through $max{
+    $value:nth($val,$i)/2/$fontSize;
+    $str:#{$str+$value}rem;
+    @if $i <$max{
+      $str:#{$str+" "};
+    }
+  }
+  #{$name}:$str;
+}
