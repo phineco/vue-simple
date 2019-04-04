@@ -5,42 +5,42 @@
     </keep-alive>
     <router-view v-if="!$router.currentRoute.meta.keepAlive" />
     <div class="app_footer"
-      v-show="isShowTab">
-      <router-link to="/homePage">
+         v-show="isShowTab">
+      <router-link to="/userInfo">
         <i class="iconfont icon-shouye" />
-        <p>首页</p>
+        <p>主页</p>
       </router-link>
-      <router-link to="/vehicle/input">
+      <router-link to="/reportList">
         <i class="iconfont icon-tabproducticon" />
-        <p>车牌号</p>
+        <p>检测报告</p>
       </router-link>
-      <router-link to="/minePage">
+      <router-link to="/hospitalList">
         <i class="iconfont icon-wode" />
-        <p>我的</p>
+        <p>预约</p>
       </router-link>
     </div>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex';
-export default {
-  name: 'app',
-  data() {
-    return {
-      search: ''
-    };
-  },
-  computed: {
-    /**
-     * 是否显示底部tab
-     */
-    isShowTab() {
-      return /vehicle|homePage|minePage/.test(this.$route.path);
+  import { mapState } from 'vuex';
+  export default {
+    name: 'app',
+    data() {
+      return {
+        search: ''
+      };
     },
-    ...mapState({
-      pageDirection: state => state.global.pageDirection
-    })
+    computed: {
+      /**
+       * 是否显示底部tab
+       */
+      isShowTab() {
+        return /vehicle|homePage|minePage/.test(this.$route.path);
+      },
+      ...mapState({
+          pageDirection: state => state.global.pageDirection
+  })
   },
   created() {
     //解决微信 title 设置异常问题
@@ -60,25 +60,25 @@ export default {
     };
   },
   beforeCreate() {}
-};
+  };
 </script>
 
 <style lang="scss">
-.PB-48 {
-  padding-bottom: 56px;
-}
+  .PB-48 {
+    padding-bottom: 56px;
+  }
 
-.app_footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 56px;
-  display: flex;
-  align-items: center;
-  box-sizing: border-box;
-  background-color: #fff;
-  border-top: 1px solid #e8e8e8;
+  .app_footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    background-color: #fff;
+    border-top: 1px solid #e8e8e8;
   a {
     display: block;
     flex: 1;
@@ -86,42 +86,42 @@ export default {
     text-decoration: none;
     font-size: 12px;
     color: grey;
-    i {
-      font-size: 30px;
-    }
+  i {
+    font-size: 30px;
+  }
   }
   .router-link-exact-active,
   .router-link-active {
-    i {
-      color: red;
-    }
-    p {
-      color: red;
-    }
+  i {
+    color: #147fc3;
   }
-}
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s ease;
-}
-.fade-enter,
-.fade-leave-active {
-  opacity: 0;
-}
-.child-view {
-  position: relative;
-  transition: all 0.3s cubic-bezier(0.55, 0, 0.1, 1);
-}
-.slide-left-enter,
-.slide-right-leave-active {
-  opacity: 0;
-  -webkit-transform: translate(30px, 0);
-  transform: translate(30px, 0);
-}
-.slide-left-leave-active,
-.slide-right-enter {
-  opacity: 0;
-  -webkit-transform: translate(-30px, 0);
-  transform: translate(-30px, 0);
-}
+  p {
+    color: #147fc3;
+  }
+  }
+  }
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.5s ease;
+  }
+  .fade-enter,
+  .fade-leave-active {
+    opacity: 0;
+  }
+  .child-view {
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.55, 0, 0.1, 1);
+  }
+  .slide-left-enter,
+  .slide-right-leave-active {
+    opacity: 0;
+    -webkit-transform: translate(30px, 0);
+    transform: translate(30px, 0);
+  }
+  .slide-left-leave-active,
+  .slide-right-enter {
+    opacity: 0;
+    -webkit-transform: translate(-30px, 0);
+    transform: translate(-30px, 0);
+  }
 </style>
