@@ -1,6 +1,6 @@
 @import url('//at.alicdn.com/t/font_352963_jvyeag6321sv2t9.css'); //阿里矢量图
 /* v2.0 | 20110126
-  http://meyerweb.com/eric/tools/css/reset/ 
+  http://meyerweb.com/eric/tools/css/reset/
   License: none (public domain)
 */
 
@@ -278,4 +278,22 @@ $brower-default-font-size: 16px !default;
 }
 .border_1px {
   background: white svg(1px-border param(--color#00b1ff));
+}
+//px转rem
+$fontSize:20;
+html{font-size:$fontSize;}
+@function r($px){
+  @return $px/2/$fontSize+rem;
+}
+@mixin setPm($name,$val...){
+  $max:length($val); //4
+  $str:'';
+  @for $i from 1 through $max{
+    $value:nth($val,$i)/2/$fontSize;
+    $str:#{$str+$value}rem;
+    @if $i <$max{
+      $str:#{$str+" "};
+    }
+  }
+  #{$name}:$str;
 }

@@ -4,6 +4,7 @@ import router from './router';
 import MintUI from 'mint-ui';
 import Axios from './axios';
 import store from './store';
+import './js/rem';
 //校验组件 https://github.com/mvpleung/verify
 import verify from 'verify-plugin';
 //工具插件 https://github.com/mvpleung/vue-utils-plugin
@@ -41,7 +42,7 @@ Vue.config.errorHandler = function(err, vm, info) {
 };
 window.Vue = Vue;
 new Vue({
-  router,
-  store,
-  render: h => h(App)
+    router,
+    store,
+    render: h => h(App)
 }).$mount('#app');
