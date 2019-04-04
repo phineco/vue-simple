@@ -30,7 +30,18 @@ module.exports = {
     assetsSubDirectory: 'assets',
     assetsPublicPath: '/',
     notifyOnErrors: true,
-    proxyTable: {},
+
+
+      proxyTable: {
+        '/f': {
+          target: 'http://localhost:8081/geca', // 你要代理的域名和端口号，要加上http
+          changeOrigin: true,
+          pathRewrite: {
+            '^/f': 'f' // 这里用‘/api’代替target里面的地址，组件中调用接口时直接用api代替 比如我要调用'http://xxx.com:8080/api/NEWS/getNews.json?page=1&pageSize=10
+            //'，直接写‘/api/NEWS/getNews.json?page=1&pageSize=10’即可
+          }
+        }
+      },
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README
     // (https://github.com/webpack/css-loader#sourcemaps)
