@@ -104,12 +104,14 @@ const registerRoute = config => {
 const routes = registerRoute(RouterConfig);
 routes.push({
   path: '/',
-  redirect: '/homePage'
+  redirect: '/userInfo'
 });
 
 const router = new Router({
   routes
 });
+
+/*
 router.beforeEach((to, from, next) => {
   router.app.$indicator.close();
   from.path === '/' ?
@@ -141,6 +143,7 @@ router.beforeEach((to, from, next) => {
   }
 });
 
+*/
 router.afterEach(route => {
   Vue.nextTick(() => {
     //滚动位置保持
