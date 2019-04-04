@@ -1,6 +1,4 @@
 import $ from 'jquery'
-import {serverName} from 'src/service/getData'
-
 
 export const parseURL = (url) => {
     var a = document.createElement('a');
@@ -564,4 +562,45 @@ export const globalAjaxError = (jqXHR, textStatus, errorThrown) => {
 export function getBase(){
     var location = window.location.href;
     return location.substring(0, location.indexOf('/', 10));
+}
+
+export function formatDate (date, fmt) {
+     if (/(y+)/.test(fmt)) {
+         fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length))
+       }
+     let o = {
+         'M+': date.getMonth() + 1,
+         'd+': date.getDate(),
+        'h+': date.getHours(),
+        'm+': date.getMinutes(),
+         's+': date.getSeconds()
+     }
+    for (let k in o) {
+         if (new RegExp(`(${k})`).test(fmt)) {
+             let str = o[k] + ''
+             fmt = fmt.replace(RegExp.$1, RegExp.$1.length === 1 ? str : padLeftZero(str))
+           }
+       }
+     return fmt
+   }
+
+ function padLeftZero (str) {
+     return ('00' + str).substr(str.length)
+   }
+
+
+export function initWxUploadImage(){
+  var url = "/weixin/jsapi?url=" + encodeURIComponent(location.href.split('#')[0]);
+  $.get(url, function (wxConfignew) {
+    if (wxConfignew) {
+      wx.config({
+        debug: false,
+        appId: wxConfignew.appid, // 必填，公众号的唯一标识
+        timestamp: wxConfignew.timestamp, // 必填，生成签名的时间戳
+        nonceStr: wxConfignew.nonceStr, // 必填，生成签名的随机串
+        signature: wxConfignew.signature,// 必填，签名，见附录1
+        jsApiList: ["chooseImage", "uploadImage", "getLocalImgData"] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+      });
+    }
+  })
 }
