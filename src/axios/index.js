@@ -22,8 +22,10 @@ store.dispatch(UPDATE_CONFIG, {
 });
 // axios.defaults.withCredentials = true; //暂时屏蔽Http单实例
 !$globalConfig.debug && (axios.defaults.baseURL = Url.baseUrl); //debug模式用 proxyTable 实现跨域请求
+axios.defaults.baseURL = "";
 axios.defaults.timeout = 30000;
 axios.defaults.headers.post['Content-Type'] = 'application/json;charset=utf-8';
+axios.defaults.headers.post['X-Requested-With'] = 'true';
 let source = axios.CancelToken.source();
 axios.interceptors.request.use(
   config => {
@@ -72,18 +74,25 @@ axios.interceptors.response.use(
       );
     let msg = !response.data ?
       '请求异常，请重试' :
-      response.data.ret === 0 ?
+      response.data.status === 200 ?
         null :
-        response.data.errmsg || '响应失败，请重试';
+        response.data.msg || '响应失败，请重试';
     if (msg) {
-      if (response.data && response.data.ret === '4') {
-        source.cance(data.msg || '登录超时，请重新登录');
+      if (response.data && response.data.status === 402) {
+        //source.cance(data.msg || '登录超时，请重新登录');
+        //store._vm.$toast("402");
+        //未授权
+        window.location = msg;
+      } else if (response.data && response.data.status === 403) {
+        //store._vm.$toast("403");
+        //未登录
         store.dispatch(LOGOUT);
         router.replace({
           path: '/login',
           query: { redirect: router.currentRoute.fullPath }
         });
       } else {
+        //store._vm.$toast("else");
         !(response.config && response.config.silence) &&
           !(response.config || {}).errorHandle &&
           store._vm.$toast(msg); //config.silence:是否静默
@@ -94,7 +103,8 @@ axios.interceptors.response.use(
         code: (response.data || {}).ret
       });
     }
-    return response.config.response === true ? response : response.data;
+    //return response.config.response === true ? response : response.data;
+    return response.data;
   },
   error => {
     let errMsg =
@@ -107,10 +117,12 @@ axios.interceptors.response.use(
       !(error.config || {}).errorHandle && store._vm.$toast(errMsg);
     }
     $globalConfig.console && console.error(error);
+  console.log(error.response)
     if (error.response) {
       switch (error.response.status) {
         case 401:
           // 401 清除token信息并跳转到登录页面
+          console.log("401")
           store.dispatch(LOGOUT);
           router.replace({
             path: '/login',
