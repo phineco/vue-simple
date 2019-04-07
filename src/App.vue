@@ -36,7 +36,7 @@
        * 是否显示底部tab
        */
       isShowTab() {
-        return /vehicle|homePage|minePage/.test(this.$route.path);
+        return /vehicle|userInfo|minePage/.test(this.$route.path);
       },
       ...mapState({
           pageDirection: state => state.global.pageDirection
