@@ -1,244 +1,335 @@
 <template>
-  <div class="pageContent" v-title data-title="个人中心">
-
-    <div class="head-container">
-      <div class="headImgDiv">
-
-        <img class="headImg" v-if="userInfo.photo" v-bind:src="userInfo.photo"/>
-        <img class="headImg" v-else src="../../assets/userPhoto.png"/>
-      </div>
-      <div class="user-info">
-        <div class="name"><span>{{userInfo.nickName}}</span></div>
-        <div v-if="userInfo.mobile"><span>{{userInfo.mobile.substr(0,3)}}****{{userInfo.mobile.substr(-4)}}</span></div>
-      </div>
-    </div>
-
-    <div class="box">
-        <div class="gecaInfo"><p>GECA唯一编码</p><p>{{userInfo.gecaId}}</p></div>
-        <div class="barcode" style="padding-right: 20px; float: right">
-          <VueBarcode :value="userInfo.gecaId" :options="barcode_option" tag="svg" ></VueBarcode>
+  <div class="mainPage">
+    <div class="info-box" :style="{backgroundImage:'url('+require('assets/userInfo-bg.png')+')'}">
+      <div class="info">
+        <div class="user-head">
+          <img   v-if="userInfo.photo" v-bind:src="userInfo.photo"/>
+          <img  v-else src="../../assets/userPhoto.png"/>
         </div>
-    </div>
-
-  <div v-if="!userInfo.mobile" style="height: 400px">
-    <div style=" text-align: center;padding: 15px;">
-        <mt-button type="primary"
-                 size="large" @click="bindingPhone">绑定手机号</mt-button>
-
-    </div>
-    <div style="padding-left: 15px;" class="desc">
-        <p>
-        为了给您提供更好的服务，请先绑定手机。
-        </p>
-        <p>
-        绑定手机后您将获得以下服务：
-        </p>
-        <p>
-        1、	查看检测报告；
-        </p>
-        <p>
-        2、	预约筛查、胃镜；
-        </p>
-    </div>
-  </div>
-
-    <div v-else>
-      <div></div>
-      <mt-cell title="检测报告" is-link to="/reportList">
-
-      </mt-cell>
-
-      <mt-cell title="预约" is-link to="/hospitalList">
-
-      </mt-cell>
-    </div>
-
-
-    <div class="mainContainer">
-      <div v-for="(item, index) in reportList" @click.stop="gotoDetail(item.id)" >
-        <mt-cell :title="item.patientName" is-link>
-          <span>{{item.testDate | formatDate}}</span>
-        </mt-cell>
+        <div class="name" :class="userInfo.mobile? 'set-pad':''">
+          <p>{{userInfo.nickName}}</p>
+          <p class="phone" v-if="userInfo.mobile">{{userInfo.mobile.substr(0,3)}}****{{userInfo.mobile.substr(-4)}}</p>
+        </div>
       </div>
+      <p class="number">{{userInfo.gecaId}}</p>
+    </div>
+    <div class="line"></div>
+    <div class="bind-tip-box" v-if="!userInfo.mobile">
+      <div class="bind-btn" @click.stop="bindingPhone">绑定手机号</div>
+      <ul class="tips">
+        <li>为了给您提供更好的服务，请先绑定手机。
+          绑定手机后您将获得以下服务：</li>
+        <li>1、查看检测报告；</li>
+        <li> 2、预约筛查、胃镜；</li>
+      </ul>
+    </div>
+    <div class="nav-list" v-else>
+      <ul class="list">
+
+        <li @click.stop="gotoReportList">
+          <div class="icon-box">
+            <img src="../../assets/icon-report.png" alt="">
+          </div>
+          <div class="fr-text">{{reportCount}}</div>
+          <div class="nav-name">检测报告</div>
+        </li>
+
+        <li @click.stop="gotoHospitalList">
+          <div class="icon-box">
+            <img src="../../assets/icon-appointment.png" alt="">
+          </div>
+          <div class="fr-text">全部</div>
+          <div class="nav-name">预约</div>
+        </li>
+
+      </ul>
+      <ul class="choose-city">
+        <li :class="cityDefault == index? 'active':''" v-for="(item,index) in cityList" @click="cityDefault = index">{{item}}</li>
+      </ul>
+      <ul class="list">
+        <div v-if="cityDefault == 0 || cityDefault == 1">
+          <li>
+            <div class="icon-box">
+              <img src="../../assets/icon-hospital.png" alt="">
+            </div>
+            <div class="nav-name">安徽省立医院</div>
+          </li>
+          <li>
+            <div class="icon-box">
+              <img src="../../assets/icon-hospital.png" alt="">
+            </div>
+            <div class="nav-name">安徽医科大学第一附属医院</div>
+          </li>
+        </div>
+        <div v-if="cityDefault == 1 || cityDefault == 2">
+          <li>
+            <div class="icon-box">
+              <img src="../../assets/icon-hospital.png" alt="">
+            </div>
+            <div class="nav-name">皖南医学院第二附属医院</div>
+          </li>
+          <li>
+            <div class="icon-box">
+              <img src="../../assets/icon-hospital.png" alt="">
+            </div>
+            <div class="nav-name">淮北市人民医院</div>
+          </li>
+          <li>
+            <div class="icon-box">
+              <img src="../../assets/icon-hospital.png" alt="">
+            </div>
+            <div class="nav-name">蚌埠医学院第一附属医院</div>
+          </li>
+          <li>
+            <div class="icon-box">
+              <img src="../../assets/icon-hospital.png" alt="">
+            </div>
+            <div class="nav-name">皖南医学院弋矶山医院</div>
+          </li>
+          <li>
+            <div class="icon-box">
+              <img src="../../assets/icon-hospital.png" alt="">
+            </div>
+            <div class="nav-name">安徽省蚌埠医学院第二附属医院</div>
+          </li>
+          <li>
+            <div class="icon-box">
+              <img src="../../assets/icon-hospital.png" alt="">
+            </div>
+            <div class="nav-name">安庆市立医院 </div>
+          </li>
+        </div>
+      </ul>
     </div>
   </div>
 </template>
 
 <script>
-  import { MessageBox } from 'mint-ui';
-  import VueBarcode from '@xkeshi/vue-barcode';
-  import {formatDate} from '../../js/mUtils';
+  import { GridView, Swipe } from '@/components';
   export default {
     data() {
       return {
-        userInfo: {
+        userInfo:{
+          nickName:'',
           mobile:null,
-          nickName:"test",
-          gecaId:"122345667877"
+          gecaId:null,
+          photo:null
         },
-        mobile:null,
-        reportList:[],
-        barcode_option:{
-          displayValue: false, //是否默认显示条形码数据
-          textPosition  :'bottom', //条形码数据显示的位置
-          background: '#bfdcf7', //条形码背景颜色
-          valid: function (valid) {
-            console.log(valid)
-          },
-          width:'1px',//单个条形码的宽度
-          height: '35px',
-          fontSize: '14px' //字体大小
-        }
+        cityList:['合肥市','安徽省','其它'],
+        cityDefault:0,//默认选中城市
+        reportCount:0,
+        phone:Vue.$utils.getLocalStorage('phone'),
       };
     },
     computed: {
-      headImg() {
-        return (
-          this.userInfo.photo ||
-          require('@/assets/userPhoto.png')
-        );
-      }
-    },
-    components: {
-      VueBarcode
+      /*
+       headImg() {
+       return (
+       this.userInfo.photo ||
+       require('@/assets/userPhoto.png')
+       );
+       }*/
     },
     mounted() {
       this.getUserInfo();
     },
-    watch: {
-      '$route.path': function (newVal, oldVal) {
-        console.log("From " + oldVal + " to " + newVal);
-        if(newVal === '/userInfo' && oldVal === '/login') {
-          this.getUserInfo();
-        }
-      }
-    },
-    filters:{
-      formatDate:function (time) {
-        let obj = new Date(time);
-        return formatDate(obj, 'yyyy-MM-dd hh:mm');
-      }
-    },
     methods: {
       getUserInfo() {
-        console.log("getUserInfo");
+        console.log("getuserInfo");
         let url = "/f/userInfo"
         //let url = "http://geca.biohitcc.com/f/hi";
         this.axios.post(url, {})
           .then(response => {
           this.userInfo = response.data;
+
+        //手机号不为空,则取记录总数
         if (this.userInfo.mobile) {
-          this.mobile = this.userInfo.mobile;
+          this.axios.post("/f/getReportCount", {"phone":this.phone})
+            .then(response => {
+            this.reportCount = response.data;
+        })
+        .catch(error => {
+            console.log("error" + error)
+          //MessageBox.alert("查询失败,请重试");
+        })
         }
       })
       .catch(error => {
           console.log("error" + error)
         //MessageBox.alert("查询失败,请重试");
-      });
-      },
-      getMyExplaination() {
-        let url = "/f/getMyReportList";
-        this.axios.post(url,{"phone": this.phone})
-          .then(response => {
-          this.reportList = response.data;
-        console.log(this.reportList);
-      }).catch(error => {
-          console.log("error" + error)
-        //MessageBox.alert("查询失败,请重试");
-      });
-      },
-
-      gotoDetail:function(itemId) {
-        let str = JSON.stringify(itemId)
-        console.log(str);
-        this.$router.push({
-          path:'/reportItem',
-          query:{
-            itemId : itemId
-          }
-        });
+      })
       },
       bindingPhone() {
         this.$router.push({
           path:'/login',
         });
       },
-      gotoAppointment() {
-        console.log("gotoAppointment")
+      gotoReportList() {
+        this.$router.push({
+          path:'/reportList',
+          query:{
+            count : this.count
+          }
+        });
       },
+      gotoHospitalList() {
+        this.$router.push({
+          path:'/hospitalList',
+        });
+      }
     }
   };
 </script>
 
 <style lang="scss" scoped>
-  @import 'src/css/mixin';
-  .pageContent{
-    background-color: #FFFFFF;
-  div, p, span {
-    font-family: Helvetica Neue, Tahoma, Arial;
+  @import 'src/css/style';
+  .mainPage{
+    padding:r(30) 0;
   }
+  .info-box{
+    width:r(690);
+    height:r(300);
+    margin:0 auto;
+    background:url(../../assets/userInfo-bg.png) no-repeat ;
+    background-size: 100% 100%;
+    padding:r(30);
+    box-sizing:border-box;
+    border-radius:r(8);
+    position:relative;
+  .info{
+    overflow:hidden;
+  .user-head{
+    float:left;
+    width:r(110);
+    height:r(110);
+    border-radius:50%;
+    border:1px solid #fff;
+  img{
+    width:100%;
+    height:100%;
+    border-radius:100%;
   }
-
-  .head-container {
-    display: -webkit-flex;
-    display: flex;
-    width: 400px;
-    height: 100px;
-    background-color: #bfdcf7;
-  }
-
-  .headImgDiv {
-    padding:r(74) r(30) 0 r(40);
-    width: r(140);
-    height: r(140);
-    position: relative;
-    .headImg {
-      width: r(140);
-      height: r(140);
-      border: 2px solid #f7e1b1;
-      border-radius: 50%;
-    }
-  }
-
-  .head-img {
-    width: r(150);
-    height: r(150);
-    border-radius: 50%;
-    margin: 30px 0px 0 30px;
-  }
-  .user-info {
-    height: 100px;
-    margin: 10px;
   }
   .name{
-    padding-top:r(80)
+    font-size:r(32);
+    color:#115dae;
+    font-weight:bold;
+    line-height:r(50);
+    padding:r(30) 0;
+    margin-left:r(130);
+  .phone{
+    margin-top:r(4);
+    font-size:r(30);
+    color:#115dae;
   }
-
-  .box{
-    margin: 0 auto;
-    display: -webkit-flex;
-    display: flex;
-    width: 400px;
-    height: 65px;
-    background-color: #bfdcf7;
-    position: relative;
-      .barcode {
-        height:r(120);
-      }
   }
-  .gecaInfo{
-    padding-left: 60px;
-    padding-top: 8px;
-    p{
-      font-size: 16px;
-      margin: 3px;
-    }
+  .set-pad{
+    padding:r(18) 0 r(10);
+    line-height:r(40);
   }
-  .desc{
-    p {
-      margin: 5px;
-      font-size: 18px;
-      color: grey;
-    }
+  }
+  .number{
+    font-size:r(30);
+    font-weight:bold;
+    color:#095795;
+    position:absolute;
+    bottom:r(30);
+    right:r(30);
+    line-height:r(40);
+  }
+  }
+  .bind-tip-box{
+    overflow:hidden;
+  .bind-btn{
+    width:r(690);
+    height:r(90);
+    margin:r(50) auto 0;
+    border-radius:r(6);
+    background: #095795;
+    font-size:r(34);
+    color:#fff;
+    text-align:center;
+    line-height:r(90);
+  }
+  .tips{
+    margin-top:r(50);
+  li{
+    padding-left: r(30);
+    font-size:r(30);
+    color:#333;
+    line-height:r(40);
+    margin-bottom:r(10);
+  }
+  }
+  }
+  .line{
+    margin-top:r(30);
+    height:r(30);
+    background-color: #f2f2f2;
+  }
+  .nav-list{
+    padding-top:r(0);
+  .list{
+    padding:0 r(30);
+  li{
+    overflow:hidden;
+    border-bottom:1px solid #f2f2f2;
+    padding:r(25) r(35) r(25) 0;
+    position:relative;
+  .icon-box{
+    width:r(40);
+    height:r(40);
+    float:left;
+  img{
+    width:100%;
+  }
+  }
+  .fr-text{
+    float:right;
+    font-size:r(26);
+    color:#147fc3;
+    line-height:r(40);
+  }
+  .nav-name{
+    margin-left:r(60);
+    font-size:r(26);
+    color:#666;
+    line-height:r(40);
+  }
+  }
+  li:before{
+    content:'';
+    position:absolute;
+    right:0;
+    top:r(32);
+    width:r(14);
+    height:r(26);
+    background:url(../../assets/arrow.png) no-repeat ;
+    background-size: 100% 100%;
+  }
+  }
+  }
+  .choose-city{
+    overflow:hidden;
+    padding:r(30) r(30) r(30) r(0);
+    margin-top:r(30);
+    text-align:right;
+  li{
+    display:inline-block;
+    width:r(150);
+    border:1px solid #095795;
+    height:r(60);
+    font-size:r(28);
+    color:#095795;
+    text-align:center;
+    line-height:r(60);
+    border-radius:r(6);
+    margin-left:r(25);
+    text-align:center;
+  }
+  .active{
+    background: #095795;
+    color:#fff;
+  }
   }
 </style>
