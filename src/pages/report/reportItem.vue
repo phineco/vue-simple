@@ -2,69 +2,83 @@
   <div v-title data-title="检测报告详情">
     <!--<mt-header fixed title="检测报告详情" class="header"></mt-header>-->
     <div class="mainContainer">
-      <mt-cell title="报告名称" v-if="reportItem.reportName">
-      <span>{{reportItem.reportName}}</span>
-      </mt-cell>
-      <mt-cell title="检测编号" v-else>
-        <span>{{reportItem.testNo}}</span>
-      </mt-cell>
+      <div v-if="reportItem.reportName" class="lineDiv" >
+        <span class="firstSpan">报告名称</span>
+        <span class="secondSpan">{{reportItem.reportName}}</span>
+      </div>
+      <div v-else class="lineDiv">
+        <span class="firstSpan">检测编号</span>
+        <span class="secondSpan">{{reportItem.testNo}}</span>
+      </div>
 
-      <mt-cell title="姓名" >
-        <span>{{reportItem.patientName}}</span>
-      </mt-cell>
-      <mt-cell title="年龄" >
-        <span>{{reportItem.patientAge}}岁</span>
-      </mt-cell>
-      <mt-cell title="性别" >
-      <span>{{reportItem.patientGender}}</span>
-      </mt-cell>
+      <div class="lineDiv" >
+        <span class="firstSpan">姓名</span>
+        <span class="secondSpan">{{reportItem.patientName}}</span>
+      </div>
+      <div class="lineDiv">
+        <span class="firstSpan">年龄</span>
+        <span class="secondSpan">{{reportItem.patientAge}}岁</span>
+      </div>
 
-      <mt-cell title="PGI浓度值" >
-        <span>{{reportItem.vPg1}}</span>
-      </mt-cell>
-      <mt-cell title="PGII浓度值" >
-        <span>{{reportItem.vPg2}}</span>
-      </mt-cell>
-      <mt-cell title="G17浓度值" >
-        <span>{{reportItem.vG17}}</span>
-      </mt-cell>
-      <mt-cell title="HP" >
-      <span>{{reportItem.vHp}}</span>
-      </mt-cell>
-      <mt-cell title="检测地点" >
-        <span>{{reportItem.siteName}}</span>
-      </mt-cell>
-      <mt-cell title="检测日期" >
-        <span>{{reportItem.testDate | formatDate}}</span>
-      </mt-cell>
-    </div>
+      <div class="lineDiv">
+        <span class="firstSpan">性别</span>
+        <span class="secondSpan">{{reportItem.patientGender}}</span>
+      </div>
 
+      <div class="lineDiv">
+        <span class="firstSpan">PGI浓度值</span>
+        <span class="secondSpan">{{reportItem.vPg1}}</span>
+      </div>
 
-    <div>
-      <mt-cell style="background-color: #f4f5f7;min-height: 20px" ></mt-cell>
-        <mt-cell title="评分" >
-          <span style="color: #000;">{{reportItem.score}}</span>
-        </mt-cell>
-        <mt-cell title="风险" >
-          <span style="color: #000;">{{reportItem.risk}}</span>
-        </mt-cell>
-        <a class="mint-cell mint-field is-textarea"><!---->
-          <div class="mint-cell-left"></div>
-          <div class="mint-cell-wrapper">
-            <div class="mint-cell-title"><!---->
-              <span class="mint-cell-text">建议</span>
-            </div>
-            <div class="mint-cell-value">
-              <textarea readonly placeholder="" rows="3" class="mint-field-core">{{reportItem.suggestion}}</textarea>
-              <div class="mint-field-clear" style="display: none;">
-                <i class="mintui mintui-field-error"></i></div>
-              <span class="mint-field-state is-default">
-                <i class="mintui mintui-field-default"></i></span>
-              <div class="mint-field-other"></div></div> <!----></div>
-          <div class="mint-cell-right"></div>
-        </a>
+      <div class="lineDiv">
+        <span class="firstSpan" >PGII浓度值</span>
+        <span class="secondSpan">{{reportItem.vPg2}}</span>
+      </div>
+
+      <div class="lineDiv">
+        <span class="firstSpan">G17浓度值</span>
+        <span class="secondSpan">{{reportItem.vG17}}</span>
+      </div>
+
+      <div class="lineDiv">
+        <span class="firstSpan">HP</span>
+        <span class="secondSpan">{{reportItem.vHp}}</span>
+      </div>
+
+      <div class="lineDiv">
+        <span class="firstSpan">检测地点</span>
+        <span class="secondSpan">{{reportItem.siteName}}</span>
+      </div>
+
+      <div class="lineDiv">
+        <span class="firstSpan">检测日期</span>
+        <span class="secondSpan">{{reportItem.testDate | formatDate}}</span>
+      </div>
 
     </div>
+
+    <div class="line" ></div>
+
+    <div class="mainContainer">
+
+      <div class="lineDiv">
+        <span class="firstSpan">评分</span>
+        <span class="secondSpan">{{reportItem.score}}</span>
+      </div>
+      <div class="lineDiv">
+        <span class="firstSpan">风险</span>
+        <span class="secondSpan">{{reportItem.risk}}</span>
+      </div>
+      <div class="suggestionDiv">
+        <div class="suggestion">
+          建议
+        </div>
+        <div class="textArea">
+          {{reportItem.suggestion}}
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -75,8 +89,8 @@ import { Indicator } from 'mint-ui';
     data () {
       return {
         reportId : this.$route.query.itemId,
-        reportItem:{}
-        /*
+        reportItem:{},
+/*
         reportItem:{
           "createDate":1553764931412,
           "delFlag":"0",
@@ -99,7 +113,7 @@ import { Indicator } from 'mint-ui';
           "vPg1":"85.95",
           "vPg2":"5.94"
         }
-        */
+*/
       }
     },
     filters:{
@@ -117,12 +131,9 @@ import { Indicator } from 'mint-ui';
       });
     },
     mounted() {
-
       console.log(this.$route.query.itemId);
 
-      //http://localhost:8081/geca
       let url = "/f/getReport"
-      //let url = "http://geca.biohitcc.com/f/hi";
       this.axios.post(url, {"id": this.reportId})
         .then(response => {
         this.reportItem = response.data;
@@ -139,11 +150,52 @@ import { Indicator } from 'mint-ui';
 </script>
 
 <style lang="scss" scoped>
+  @import 'src/css/style';
   .mainContainer{
-    div, p, span {
+    padding:0 r(30);
+    div, p, span,textarea {
       font-family: Helvetica Neue, Tahoma, Arial;
+      font-size: r(26);
+      color: #666;
     }
   }
+  .lineDiv {
+    overflow:hidden;
+    border-bottom:1px solid #f2f2f2;
+    padding:r(25) 0 r(25) 0;
+    position:relative;
+    .firstSpan {
+      float: left;
+
+    }
+    .secondSpan{
+      float: right;
+    }
+  }
+  .line{
+
+    height:r(30);
+    background-color: #f2f2f2;
+  }
+  .suggestionDiv {
+    display:flex;
+    overflow:hidden;
+    padding:r(25) 0 r(25) 0;
+    position:relative;
+    .suggestion{
+      float: left;
+      line-height: r(100);
+      width: r(200);
+    }
+    .textarea {
+      padding-left: r(100);
+      float: left;
+      width: 60%;
+      line-height: r(100);
+    }
+  }
+
+
   .header{
     font-size: large;
   }
