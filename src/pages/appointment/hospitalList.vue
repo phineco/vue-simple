@@ -50,7 +50,7 @@
               <img src="../../assets/arrow-down.png" class="iconImg">
             </div>
             <div class="nav-name">{{item.name}}</div>
-            <div class="nav-name">安徽 / 合肥</div>
+            <div class="nav-name">{{item.province}}</div>
             <div class="btn-control">
               <div class="btn-group">
                 <div class="btn-first">预约胃镜</div>
@@ -70,7 +70,7 @@
         -->
       </div>
     </div>
-    <div ref="picker" id="picker" class="hide">
+    <div ref="picker" id="picker" class="provincePicker">
       <mt-picker :slots="slots" :itemHeight="30" ></mt-picker>
     </div>
 
@@ -91,7 +91,7 @@
         hospitalList: [{name:"安徽医科大学第一附属医院"},
           {name:"安徽省立医院"}
           ],*/
-        slots:[{values: ['安徽省', '广东省', '江西省'], className:'provincePicker'}],
+        slots:[{values: ['安徽省', '广东省', '江西省']}],
         hospitalList: [],
         pageSize:15,
         pageNo:0,
@@ -116,7 +116,7 @@
         el.style.display = 'none';
       },
       showProvincePicker() {
-        return;
+
         let el = this.$refs.picker;
         console.log(el)
         let styleName = el.style.display;
@@ -151,6 +151,9 @@
       loadMore() {
         if(this.lastPage) {
           return;
+        }
+        if (this.loading) {
+          return false;
         }
         this.pageNo = this.pageNo + 1;
         this.loading = true;
@@ -198,10 +201,15 @@
       font-family: Helvetica Neue, Tahoma, Arial;
     }
   }
+
   .provincePicker {
-    font-size:r(26);
-    color:#666;
+    display: none;
   }
+
+  .provincePicker /deep/ .picker-slot {
+    font-size: r(26);
+  }
+
   .address-container{
     font-size: r(10);
   }

@@ -57,8 +57,8 @@
         </ul>
 
        </div>
-      <div v-if="reportList.length == 0 && noData" style="margin: 10px;">
-        <p style="color:grey;font-size: 16px;">未查询到符合条件的检查记录</p>
+      <div v-if="reportList.length == 0 && noData" class="emptyDiv">
+        <p>未查询到符合条件的检查记录</p>
       </div>
     </div>
 
@@ -253,6 +253,9 @@
         console.log(this.startDate + "--" + this.endDate)
       },
       loadMore() {
+        if (this.loading) {
+          return false;
+        }
         this.pageNum = this.pageNum + 1;
         this.loading = true;
         /*setTimeout(() => {
@@ -307,7 +310,14 @@
     font-family: Helvetica Neue, Tahoma, Arial;
   }
 }
-.header{
+  .pickerPop /deep/ .picker-slot {
+    font-size: r(26);
+  }
+
+  .pickerPop /deep/.mint-datetime-action {
+    font-size: r(26);
+  }
+  .header{
   font-size: large;
 }
   .lineContainer{
@@ -416,4 +426,11 @@
       */
   }
 }
+  .emptyDiv {
+    margin:r(30);
+    p {
+      font-size: r(26);
+      color: #666;
+    }
+  }
 </style>
