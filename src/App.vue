@@ -36,7 +36,7 @@
        * 是否显示底部tab
        */
       isShowTab() {
-        return /vehicle|userInfo|minePage/.test(this.$route.path);
+        return /hospitalList|userInfo|reportList/.test(this.$route.path);
       },
       ...mapState({
           pageDirection: state => state.global.pageDirection
