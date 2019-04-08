@@ -63,7 +63,8 @@
   };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+  @import 'src/css/style';
   .PB-48 {
     padding-bottom: 56px;
   }
@@ -84,7 +85,7 @@
     flex: 1;
     text-align: center;
     text-decoration: none;
-    font-size: 12px;
+    font-size: r(26);
     color: grey;
   i {
     font-size: 30px;

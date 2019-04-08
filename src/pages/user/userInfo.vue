@@ -1,6 +1,6 @@
 <template>
-  <div class="mainPage">
-    <div class="info-box" :style="{backgroundImage:'url('+require('assets/userInfo-bg.png')+')'}">
+  <div class="mainPage" v-title data-title="GECA服务">
+    <div class="info-box" :style="{backgroundImage:'url('+require('assets/userInfo-bg.png')+')'}" @click.stop="showBarcode">
       <div class="info">
         <div class="user-head">
           <img   v-if="userInfo.photo" v-bind:src="userInfo.photo"/>
@@ -11,7 +11,10 @@
           <p class="phone" v-if="userInfo.mobile">{{userInfo.mobile.substr(0,3)}}****{{userInfo.mobile.substr(-4)}}</p>
         </div>
       </div>
-      <p class="number">{{userInfo.gecaId}}</p>
+      <div class="barcodeDiv">
+        <div class="number"><p >{{userInfo.gecaId}}</p></div>
+        <div class="barcodeIcon"><img  src="../../assets/icon-barcode.png"></div>
+      </div>
     </div>
     <div class="line"></div>
     <div class="bind-tip-box" v-if="!userInfo.mobile">
@@ -30,82 +33,41 @@
           <div class="icon-box">
             <img src="../../assets/icon-report.png" alt="">
           </div>
-          <div class="fr-text">{{reportCount}}</div>
+          <div class="fr-text">{{reportCount}} <img class="imgArrow" src="../../assets/arrow.png"/></div>
           <div class="nav-name">检测报告</div>
         </li>
 
-        <li @click.stop="gotoHospitalList">
+        <li>
           <div class="icon-box">
             <img src="../../assets/icon-appointment.png" alt="">
           </div>
-          <div class="fr-text">全部</div>
-          <div class="nav-name">预约</div>
-        </li>
+          <div class="fr-text"></div>
+          <div class="nav-name">我的预约</div>
 
+          <div class="btn-control">
+            <div class="btn-group">
+              <div class="btn-first">预约中 <p>0</p></div>
+              <div class="vline"></div>
+              <div class="btn-first">预约成功 <p>0</p></div>
+              <div class="vline"></div>
+              <div class="btn-first">已完成 <p>0</p></div>
+            </div>
+          </div>
+        </li>
       </ul>
-      <ul class="choose-city">
-        <li :class="cityDefault == index? 'active':''" v-for="(item,index) in cityList" @click="cityDefault = index">{{item}}</li>
-      </ul>
-      <ul class="list">
-        <div v-if="cityDefault == 0 || cityDefault == 1">
-          <li>
-            <div class="icon-box">
-              <img src="../../assets/icon-hospital.png" alt="">
-            </div>
-            <div class="nav-name">安徽省立医院</div>
-          </li>
-          <li>
-            <div class="icon-box">
-              <img src="../../assets/icon-hospital.png" alt="">
-            </div>
-            <div class="nav-name">安徽医科大学第一附属医院</div>
-          </li>
-        </div>
-        <div v-if="cityDefault == 1 || cityDefault == 2">
-          <li>
-            <div class="icon-box">
-              <img src="../../assets/icon-hospital.png" alt="">
-            </div>
-            <div class="nav-name">皖南医学院第二附属医院</div>
-          </li>
-          <li>
-            <div class="icon-box">
-              <img src="../../assets/icon-hospital.png" alt="">
-            </div>
-            <div class="nav-name">淮北市人民医院</div>
-          </li>
-          <li>
-            <div class="icon-box">
-              <img src="../../assets/icon-hospital.png" alt="">
-            </div>
-            <div class="nav-name">蚌埠医学院第一附属医院</div>
-          </li>
-          <li>
-            <div class="icon-box">
-              <img src="../../assets/icon-hospital.png" alt="">
-            </div>
-            <div class="nav-name">皖南医学院弋矶山医院</div>
-          </li>
-          <li>
-            <div class="icon-box">
-              <img src="../../assets/icon-hospital.png" alt="">
-            </div>
-            <div class="nav-name">安徽省蚌埠医学院第二附属医院</div>
-          </li>
-          <li>
-            <div class="icon-box">
-              <img src="../../assets/icon-hospital.png" alt="">
-            </div>
-            <div class="nav-name">安庆市立医院 </div>
-          </li>
-        </div>
-      </ul>
+
+    </div>
+
+    <div class='popContainer' v-if="userInfo.gecaId" @click.stop="hideBarcode" ref="barcodeDiv">
+      <div class="barcode" >
+        <VueBarcode  :value="userInfo.gecaId" :options="barcode_option" tag="svg" ></VueBarcode>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-  import { GridView, Swipe } from '@/components';
+  import VueBarcode from '@xkeshi/vue-barcode';
   export default {
     data() {
       return {
@@ -115,11 +77,31 @@
           gecaId:null,
           photo:null
         },
-        cityList:['合肥市','安徽省','其它'],
-        cityDefault:0,//默认选中城市
+
         reportCount:0,
-        phone:Vue.$utils.getLocalStorage('phone'),
+        barcode_option:{
+          displayValue: true, //是否默认显示条形码数据
+          textPosition  :'bottom', //条形码数据显示的位置
+          background: '#ffffff', //条形码背景颜色
+          valid: function (valid) {
+            console.log(valid)
+          },
+          width:'2px',//单个条形码的宽度
+          height: '55px',
+          fontSize: '20px', //字体大小
+        }
       };
+    },
+    watch: {
+      '$route.path': function (newVal, oldVal) {
+        console.log("From " + oldVal + " to " + newVal);
+        if(newVal === '/userInfo' && oldVal === '/login') {
+          this.getUserInfo();
+        }
+      }
+    },
+    components: {
+      VueBarcode
     },
     computed: {
       /*
@@ -134,6 +116,14 @@
       this.getUserInfo();
     },
     methods: {
+      showBarcode() {
+        let el = this.$refs.barcodeDiv;
+        el.style.display = "block";
+      },
+      hideBarcode() {
+        let el = this.$refs.barcodeDiv;
+        el.style.display = "none";
+      },
       getUserInfo() {
         console.log("getuserInfo");
         let url = "/f/userInfo"
@@ -186,6 +176,26 @@
   .mainPage{
     padding:r(30) 0;
   }
+  .popContainer{
+    display: none;
+    z-index:100;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #808080;
+    opacity:0.9;
+    .barcode {
+      text-align:center;
+      line-height: r(300);
+      position: relative;
+      margin: 0 auto;
+      padding-top: 50%;
+      width: r(400);
+      height: r(300);
+    }
+  }
   .info-box{
     width:r(690);
     height:r(300);
@@ -228,15 +238,23 @@
     line-height:r(40);
   }
   }
-  .number{
-    font-size:r(30);
-    font-weight:bold;
-    color:#095795;
-    position:absolute;
-    bottom:r(30);
-    right:r(30);
-    line-height:r(40);
+  .barcodeDiv {
+    padding-top: r(80);
+    padding-right: r(30);
+    display:flex;
+      .number{
+        padding: r(15) r(15) 0  r(300);
+        font-size:r(36);
+        font-weight:900;
+        color:#095795;
+        line-height:r(40);
+        float: left;
+      }
+      .barcodeIcon{
+        float: right;
+      }
   }
+
   }
   .bind-tip-box{
     overflow:hidden;
@@ -286,50 +304,62 @@
   }
   .fr-text{
     float:right;
-    font-size:r(26);
+    font-size:r(28);
     color:#147fc3;
     line-height:r(40);
   }
   .nav-name{
     margin-left:r(60);
-    font-size:r(26);
+    font-size:r(28);
     color:#666;
     line-height:r(40);
   }
   }
+  /*
   li:before{
     content:'';
     position:absolute;
     right:0;
     top:r(32);
     width:r(14);
-    height:r(26);
+    height:r(28);
     background:url(../../assets/arrow.png) no-repeat ;
     background-size: 100% 100%;
+  }*/
   }
   }
-  }
-  .choose-city{
-    overflow:hidden;
-    padding:r(30) r(30) r(30) r(0);
-    margin-top:r(30);
-    text-align:right;
-  li{
-    display:inline-block;
-    width:r(150);
-    border:1px solid #095795;
+
+  .btn-group {
+    padding-left: r(80);
+    display:flex;
+    line-height:r(60);
+  .btn-first{
+    width:r(280);
     height:r(60);
+    margin:r(20) r(10) r(30) r(10);
     font-size:r(28);
-    color:#095795;
+    color:#666;
     text-align:center;
     line-height:r(60);
-    border-radius:r(6);
-    margin-left:r(25);
-    text-align:center;
+    p {
+      color:#147fc3;
+    }
   }
-  .active{
-    background: #095795;
-    color:#fff;
   }
+
+  .imgArrow {
+    position:absolute;
+    right:0;
+    top:r(32);
+    width:r(14);
+    height:r(28);
+  }
+
+  .vline{
+    float:left;
+    margin-top: r(50);
+    width: r(4);
+    height: r(70);
+    background: #e9e9e9;
   }
 </style>
