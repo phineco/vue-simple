@@ -192,7 +192,6 @@
       position: relative;
       margin: 0 auto;
       padding-top: 50%;
-      width: r(400);
       height: r(300);
     }
   }
@@ -240,17 +239,17 @@
   }
   .barcodeDiv {
     padding-top: r(80);
-    padding-right: r(30);
     display:flex;
       .number{
-        padding: r(15) r(15) 0  r(300);
+        padding: r(15) r(15) 0  r(320);
         font-size:r(36);
         font-weight:900;
         color:#095795;
         line-height:r(40);
-        float: left;
+        float: right;
       }
       .barcodeIcon{
+        padding-right: r(20);
         float: right;
       }
   }

@@ -155,7 +155,7 @@ import { Indicator } from 'mint-ui';
     padding:0 r(30);
     div, p, span,textarea {
       font-family: Helvetica Neue, Tahoma, Arial;
-      font-size: r(26);
+      font-size: r(28);
       color: #666;
     }
   }

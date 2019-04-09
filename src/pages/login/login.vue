@@ -248,7 +248,7 @@
   .login_footer_agreement {
     padding-top: r(30);
     text-align: center;
-    font-size: r(26);
+    font-size: r(28);
     color: grey;
   a {
     color: rgb(251, 0, 0);

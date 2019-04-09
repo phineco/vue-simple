@@ -1,5 +1,5 @@
 <template>
-  <div v-title data-title="检测报告列表">
+  <div v-title data-title="GECA服务">
 
     <div class="nav-list">
       <ul class="list">
@@ -311,11 +311,11 @@
   }
 }
   .pickerPop /deep/ .picker-slot {
-    font-size: r(26);
+    font-size: r(28);
   }
 
   .pickerPop /deep/.mint-datetime-action {
-    font-size: r(26);
+    font-size: r(28);
   }
   .header{
   font-size: large;
@@ -327,7 +327,7 @@
       border-bottom:1px solid #f2f2f2;
       padding:r(25) r(35) r(25) 0;
       position:relative;
-      font-size: r(26);
+      font-size: r(28);
       color:#666;
     }
   }
@@ -360,7 +360,7 @@
   }
   .fr-text{
     float:right;
-    font-size:r(26);
+    font-size:r(28);
     color:#147fc3;
     line-height:r(40);
       span {
@@ -374,7 +374,7 @@
   }
   .nav-name{
     margin-left:r(60);
-    font-size:r(26);
+    font-size:r(28);
     color:#666;
     line-height:r(40);
   }
@@ -419,7 +419,7 @@
         right:0;
         top:r(32);
         width:r(14);
-        height:r(26);
+        height:r(28);
         background:url(../../assets/arrow-down.png) no-repeat ;
         background-size: 100% 100%;
         }
@@ -429,7 +429,7 @@
   .emptyDiv {
     margin:r(30);
     p {
-      font-size: r(26);
+      font-size: r(28);
       color: #666;
     }
   }
