@@ -1,6 +1,11 @@
 <template>
-  <div v-title data-title="检测报告详情">
+  <div>
     <!--<mt-header fixed title="检测报告详情" class="header"></mt-header>-->
+    <div class="headerDiv">
+      <div class="back" @click.stop="goBack"><mt-button icon="back"></mt-button></div>
+      检测报告详情
+    </div>
+
     <div class="mainContainer">
       <div v-if="reportItem.reportName" class="lineDiv" >
         <span class="firstSpan">报告名称</span>
@@ -123,6 +128,9 @@ import { Indicator } from 'mint-ui';
       }
     },
     methods: {
+      goBack() {
+        this.$router.replace('/reportList');
+      }
     },
     create() {
       Indicator.open({
@@ -151,12 +159,36 @@ import { Indicator } from 'mint-ui';
 
 <style lang="scss" scoped>
   @import 'src/css/style';
+  .headerDiv{
+    width:100%;
+    height:r(90);
+    background: $btn_color;
+    font-size:$large_font_size;
+    color:#fff;
+    text-align:center;
+    line-height:r(90);
+    background-color: $secondary_text_color;
+    .back /deep/ .mint-button--default{
+      float: left;
+      padding-left: r(5);
+      color:#fff;
+      box-shadow: 0 0 1px $btn_color;
+    }
+    .back /deep/ .mint-button {
+      height:r(90);
+    }
+  }
+
+  .headerDiv /deep/ .mintui {
+    font-size: $large_font_size;
+  }
+
   .mainContainer{
     padding:0 r(30);
     div, p, span,textarea {
       font-family: Helvetica Neue, Tahoma, Arial;
-      font-size: r(28);
-      color: #666;
+      font-size: $main_font_size;
+      color: $primary_text_color;
     }
   }
   .lineDiv {

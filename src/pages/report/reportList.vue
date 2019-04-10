@@ -1,37 +1,45 @@
 <template>
-  <div v-title data-title="GECA服务">
+  <div v-title data-title="GECA服务" class="bodyContainer" >
 
-    <div class="nav-list">
-      <ul class="list">
-        <li>
-          <div class="icon-box1" >
-            <img src="../../assets/icon-filter.png" alt="">
-          </div>
-          <div class="fr-text"></div>
-          <div class="nav-name">过滤</div>
-        </li>
+    <div class="lineContainer" @click.stop="isDisplayFilter = !isDisplayFilter">
+      <div class="lineHeader">
+        <div class="icon-box">
+          <img src="../../assets/icon-filter.png" alt="">
+        </div>
+        过滤
+      </div>
+    </div>
+    <div class="search-list" >
+      <ul class="list" v-if="isDisplayFilter">
+      <li @click.stop="openPicker(0)" >
+        <div class="icon-box">
+        </div>
+        <div style="line-height: 10px">
+          <div class="fr-text"><span>{{startDate}}</span>
 
-        <li @click.stop="openPicker(0)" >
-          <div class="icon-box">
-          </div>
-          <div style="line-height: 10px">
-            <div class="fr-text"><span>{{startDate}}</span><img style="width: 12px;height: 18px;" src="../../assets/arrow.png"/></div>
-            <div class="nav-name" >开始时间</div>
-          </div>
-        </li>
+            <img class="imgArrow" style="width: 12px;height: 18px;" src="../../assets/arrow.png"/></div>
 
-        <li @click.stop="openPicker(1)">
-          <div class="icon-box">
-          </div>
-          <div class="fr-text"><span>{{endDate}}</span><img style="width: 12px;height: 18px;" src="../../assets/arrow.png"/></div>
-          <div class="nav-name">结束时间</div>
-        </li>
+          <div class="nav-name" >开始时间</div>
+        </div>
+      </li>
 
-
+      <li @click.stop="openPicker(1)">
+        <div class="icon-box">
+        </div>
+        <div class="fr-text"><span>{{endDate}}</span>
+          <img class="imgArrow" style="width: 12px;height: 18px;" src="../../assets/arrow.png"/></div>
+        <div class="nav-name">结束时间</div>
+      </li>
       </ul>
     </div>
+
+    <div class="line" ></div>
+
     <div class="lineContainer">
       <div class="lineHeader">
+        <div class="icon-box">
+          <img src="../../assets/icon-report.png" alt="">
+        </div>
         报告列表
       </div>
     </div>
@@ -45,11 +53,9 @@
         <ul class="list" v-for="(item, index) in reportList" >
 
           <li  @click.stop="gotoDetail(item.id)" >
-            <div class="icon-box">
-              <img src="../../assets/icon-report.png" alt="">
-            </div>
+
             <div class="fr-text">
-              <img src="../../assets/arrow.png">
+              <img class="imgArrow" src="../../assets/arrow.png">
             </div>
             <div class="nav-name">{{item.patientName}}</div>
             <div class="nav-name">{{item.testDate | formatDate}}</div>
@@ -92,6 +98,8 @@
   export default {
     data () {
       return {
+        lastPage: false,
+        count:0,
         reportList: [],
         pageSize:15,
         pageNum:0,
@@ -102,6 +110,7 @@
         endDate:null,
         currentSelected:null,
         testDate:null,
+        isDisplayFilter:false,
 /*
         reportList:[
           {
@@ -125,96 +134,8 @@
           "vHp":"阴性",
           "vPg1":"200.67",
           "vPg2":"14.73"
-        },
-        {
-          "createDate":1553764931311,
-          "delFlag":"0",
-          "diagnostic":"",
-          "gecaId":"549043775453",
-          "id":"c0c1a34627f245528b568c4f2b62b800",
-          "isDiagnosed":0,
-          "mobile":"18919604808",
-          "patientAge":"72",
-          "patientGender":"男",
-          "patientName":"李宏成",
-          "risk":"",
-          "score":"",
-          "siteName":"广州市中西医结合医院",
-          "suggestion":"胃部炎症",
-          "testDate":1551410079000,
-          "testNo":"0068-02-000016",
-          "vG17":"1.47",
-          "vHp":"阴性",
-          "vPg1":"200.67",
-          "vPg2":"14.73"
-        },
-        {
-          "createDate":1553764931311,
-          "delFlag":"0",
-          "diagnostic":"",
-          "gecaId":"549043775453",
-          "id":"c0c1a34627f245528b568c4f2b62b800",
-          "isDiagnosed":0,
-          "mobile":"18919604808",
-          "patientAge":"72",
-          "patientGender":"男",
-          "patientName":"李宏成",
-          "risk":"",
-          "score":"",
-          "siteName":"广州市中西医结合医院",
-          "suggestion":"胃部炎症",
-          "testDate":1551410079000,
-          "testNo":"0068-02-000016",
-          "vG17":"1.47",
-          "vHp":"阴性",
-          "vPg1":"200.67",
-          "vPg2":"14.73"
-        },
-        {
-          "createDate":1553764931311,
-          "delFlag":"0",
-          "diagnostic":"",
-          "gecaId":"549043775453",
-          "id":"c0c1a34627f245528b568c4f2b62b800",
-          "isDiagnosed":0,
-          "mobile":"18919604808",
-          "patientAge":"72",
-          "patientGender":"男",
-          "patientName":"李宏成",
-          "risk":"",
-          "score":"",
-          "siteName":"广州市中西医结合医院",
-          "suggestion":"胃部炎症",
-          "testDate":1551410079000,
-          "testNo":"0068-02-000016",
-          "vG17":"1.47",
-          "vHp":"阴性",
-          "vPg1":"200.67",
-          "vPg2":"14.73"
-        },
-        {
-          "createDate":1553764931311,
-          "delFlag":"0",
-          "diagnostic":"",
-          "gecaId":"549043775453",
-          "id":"c0c1a34627f245528b568c4f2b62b800",
-          "isDiagnosed":0,
-          "mobile":"18919604808",
-          "patientAge":"72",
-          "patientGender":"男",
-          "patientName":"李宏成",
-          "risk":"",
-          "score":"",
-          "siteName":"广州市中西医结合医院",
-          "suggestion":"胃部炎症",
-          "testDate":1551410079000,
-          "testNo":"0068-02-000016",
-          "vG17":"1.47",
-          "vHp":"阴性",
-          "vPg1":"200.67",
-          "vPg2":"14.73"
         }
-      ],*/
+      ]*/
       }
     },
     filters:{
@@ -236,26 +157,42 @@
         this.currentSelected = idx;
         if (this.currentSelected == 1 && this.endDate) {
           this.testDate = this.endDate;
+          this.endDate = null;
         } else if (this.currentSelected == 0 && this.startDate){
           this.testDate = this.startDate;
+          this.startDate = null;
         } else {
           this.testDate = new Date();
         }
         this.$refs.picker.open();
       },
+
       dateConfirm () { // 时间选择器确定按钮，并把时间转换成我们需要的时间格式
         console.log(this.currentSelected);
-        if(this.currentSelected == 0) {
+        if (this.currentSelected == 0) {
           this.startDate = formatDate(this.testDate, 'yyyy-MM-dd hh:mm');
         } else if (this.currentSelected == 1) {
           this.endDate = formatDate(this.testDate, 'yyyy-MM-dd hh:mm');
         }
-        console.log(this.startDate + "--" + this.endDate)
+        console.log(this.startDate + "--" + this.endDate);
+
+        if(this.startDate != null && this.endDate != null) {
+          this.lastPage = false;
+          this.pageNum = 0;
+          this.reportList = [];
+          this.loadMore();
+        }
       },
+
       loadMore() {
+        if(this.lastPage) {
+          return;
+        }
+
         if (this.loading) {
           return false;
         }
+
         this.pageNum = this.pageNum + 1;
         this.loading = true;
         /*setTimeout(() => {
@@ -266,19 +203,21 @@
           this.loading = false;
         }, 2500);*/
         let url = "/f/queryReport";
-        this.axios.post(url,{"phone": this.phone, "pageSize":this.pageSize, "pageNum":this.pageNum})
+        this.axios.post(url,{"phone": this.phone, "startDate": this.startDate, "endDate": this.endDate,
+          "pageSize":this.pageSize, "pageNo":this.pageNum})
           .then(response => {
           console.log(response.data);
-          if (response.data.length == 0) {
-            //store._vm.$toast("未查询到符合条件的检查记录");
-            this.noData = true;
-          } else {
-            for(let i = 0; i < response.data.length; i++) {
-              this.reportList.push(response.data[i]);
-            }
+
+        this.count = response.data.count;
+        this.lastPage = response.data.lastPage;
+        if (response.data.list.length == 0) {
+          //store._vm.$toast("未查询到符合条件的检查记录");
+          this.noData = true;
+        } else {
+          for(let i = 0; i < response.data.list.length; i++) {
+            this.reportList.push(response.data.list[i]);
           }
-
-
+        }
           //this.reportList.concat(response.data);
           console.log(this.reportList);
         }).catch(error => {
@@ -305,30 +244,94 @@
 
 <style lang="scss" scoped>
   @import 'src/css/style';
-.mainContainer {
+  .bodyContainer {
+    padding-bottom: 55px;
+  }
+.bodyContainer {
   div, p, span {
     font-family: Helvetica Neue, Tahoma, Arial;
   }
 }
   .pickerPop /deep/ .picker-slot {
-    font-size: r(28);
+    font-size: $main_font_size;
   }
 
   .pickerPop /deep/.mint-datetime-action {
-    font-size: r(28);
+    font-size: $main_font_size;
   }
   .header{
   font-size: large;
 }
   .lineContainer{
-    margin: r(50) r(40) 0 r(40);
+    margin: r(40) r(40) 0 r(40);
+    border-bottom:1px solid #f2f2f2;
     .lineHeader {
       overflow:hidden;
-      border-bottom:1px solid #f2f2f2;
-      padding:r(25) r(35) r(25) 0;
       position:relative;
-      font-size: r(28);
-      color:#666;
+      font-size: $large_font_size;
+      color:$primary_text_color;
+      line-height:r(60);
+      .icon-box{
+        padding-bottom: r(20);
+        padding-right: r(10);
+        width: r(55);
+        height: r(55);
+        float: left;
+        img{
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  .search-list{
+    padding-top:r(0);
+    .list{
+      padding:0 r(30);
+      li {
+        overflow: hidden;
+        border-bottom: 1px solid #f2f2f2;
+        padding: r(20) r(35) r(20) 0;
+        position: relative;
+        line-height:r(60);
+        .icon-box1 {
+          width: r(55);
+          height: r(55);
+          float: left;
+          img {
+            width: 100%;
+          }
+        }
+    .icon-box {
+      width: r(55);
+      height: r(55);
+      float: left;
+      img {
+        width: 100%;
+      }
+     }
+    .fr-text {
+      float: right;
+      font-size: $main_font_size;
+      color: $secondary_text_color;
+      line-height: r(60);
+      padding-top: r(5);
+      span {
+        padding-top: r(5);
+        padding-right: r(30);
+      }
+      img {
+        height: r(36);
+        width: r(20);
+      }
+    }
+    .nav-name {
+      margin-left: r(60);
+      font-size: $main_font_size;
+      color: $primary_text_color;
+      line-height: r(60);
+      }
+      }
     }
   }
 
@@ -336,101 +339,78 @@
     padding-top:r(0);
   .list{
     padding:0 r(30);
-  li{
-    overflow:hidden;
-    border-bottom:1px solid #f2f2f2;
-    padding:r(25) r(35) r(25) 0;
-    position:relative;
-    .icon-box1{
-      width:r(40);
-      height:r(40);
-      float:left;
-    img{
-      width:100%;
-    }
+  li {
+    overflow: hidden;
+    border-bottom: 1px solid #f2f2f2;
+    padding: r(25) r(35) r(25) 0;
+    position: relative;
+
+  .icon-box1 {
+    width: r(55);
+    height: r(55);
+    float: left;
+
+  img {
+    width: 100%;
   }
-  .icon-box{
+
+  }
+  .icon-box {
     padding-top: r(20);
-    width:r(40);
-    height:r(40);
-    float:left;
-  img{
-    width:100%;
+    width: r(55);
+    height: r(55);
+    float: left;
+
+  img {
+    width: 100%;
   }
+
   }
-  .fr-text{
-    float:right;
-    font-size:r(28);
-    color:#147fc3;
-    line-height:r(40);
-      span {
-        padding-top: r(5);
-        padding-right: r(30);
-      }
-    img{
-      height:r(40);
-      widows:r(30);
-    }
-  }
-  .nav-name{
-    margin-left:r(60);
-    font-size:r(28);
-    color:#666;
-    line-height:r(40);
-  }
-  .btn-control{
-    display:none;
-  .btn-group {
-    padding-left: r(140);
-    display:flex;
-    line-height:r(60);
-  .btn-first{
-    width:r(180);
-    height:r(60);
-    margin:r(50) auto 0;
-    border-radius:r(6);
-    background: #095795;
-    font-size:r(20);
-    color:#fff;
-    text-align:center;
-    line-height:r(60);
-  }
-  .btn-second{
+  .fr-text {
     float: right;
-    width:r(180);
-    height:r(60);
-    margin:r(50) auto 0;
-    border-radius:r(6);
-    background: #095795;
-    font-size:r(20);
-    color:#fff;
-    text-align:center;
-    line-height:r(60);
-  }
-  }
+    font-size: $main_font_size;
+    color: $secondary_text_color;
+    line-height: r(60);
+
+  span {
+    padding-top: r(5);
+    padding-right: r(30);
   }
 
+  img {
+    height: r(36);
+    width: r(20);
+  }
 
   }
-  /*
-      li:before{
-        content:'';
-        position:absolute;
-        right:0;
-        top:r(32);
-        width:r(14);
-        height:r(28);
-        background:url(../../assets/arrow-down.png) no-repeat ;
-        background-size: 100% 100%;
-        }
-      */
+  .nav-name {
+    margin-left: r(60);
+    font-size: $main_font_size;
+    color: $primary_text_color;
+    line-height: r(40);
+  }
+  }
   }
 }
   .emptyDiv {
     margin:r(30);
     p {
-      font-size: r(28);
-      color: #666;
+      font-size: $main_font_size;
+      color: $primary_text_color;
     }
+  }
+
+  .imgArrow {
+    position:absolute;
+    right:0;
+    top:r(32);
+    width:r(20);
+    height:r(36);
+  }
+
+  .line{
+
+    height:r(30);
+    background-color: #f2f2f2;
   }
 </style>

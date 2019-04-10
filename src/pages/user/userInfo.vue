@@ -1,6 +1,6 @@
 <template>
-  <div class="mainPage" v-title data-title="GECA服务">
-    <div class="info-box" :style="{backgroundImage:'url('+require('assets/userInfo-bg.png')+')'}" @click.stop="showBarcode">
+  <div class="bodyContainer" v-title data-title="GECA服务">
+    <div class="info-box" :style="{backgroundImage:'url('+require('assets/main-bg-2.jpeg')+')'}" @click.stop="showBarcode">
       <div class="info">
         <div class="user-head">
           <img   v-if="userInfo.photo" v-bind:src="userInfo.photo"/>
@@ -58,7 +58,7 @@
 
     </div>
 
-    <div class='popContainer' v-if="userInfo.gecaId" @click.stop="hideBarcode" ref="barcodeDiv">
+    <div class='popContainer' v-if="userInfo.gecaId" @click.stop="hideBarcode" ref="barcodeDiv" @touchmove.prevent>
       <div class="barcode" >
         <VueBarcode  :value="userInfo.gecaId" :options="barcode_option" tag="svg" ></VueBarcode>
       </div>
@@ -77,7 +77,7 @@
           gecaId:null,
           photo:null
         },
-
+        phone:Vue.$utils.getLocalStorage('phone'),
         reportCount:0,
         barcode_option:{
           displayValue: true, //是否默认显示条形码数据
@@ -117,8 +117,10 @@
     },
     methods: {
       showBarcode() {
-        let el = this.$refs.barcodeDiv;
-        el.style.display = "block";
+        if (this.userInfo.gecaId) {
+          let el = this.$refs.barcodeDiv;
+          el.style.display = "block";
+        }
       },
       hideBarcode() {
         let el = this.$refs.barcodeDiv;
@@ -173,7 +175,11 @@
 
 <style lang="scss" scoped>
   @import 'src/css/style';
-  .mainPage{
+
+  .bodyContainer {
+    div, p, span {
+      font-family: Helvetica Neue, Tahoma, Arial;
+    }
     padding:r(30) 0;
   }
   .popContainer{
@@ -220,16 +226,16 @@
   }
   }
   .name{
-    font-size:r(32);
-    color:#115dae;
+    font-size:$main_font_size;
+    color:$btn_color;
     font-weight:bold;
     line-height:r(50);
     padding:r(30) 0;
     margin-left:r(130);
   .phone{
     margin-top:r(4);
-    font-size:r(30);
-    color:#115dae;
+    font-size:$main_font_size;
+    color:$btn_color;
   }
   }
   .set-pad{
@@ -242,9 +248,9 @@
     display:flex;
       .number{
         padding: r(15) r(15) 0  r(320);
-        font-size:r(36);
+        font-size: 1rem;
         font-weight:900;
-        color:#095795;
+        color:$btn_color;
         line-height:r(40);
         float: right;
       }
@@ -262,8 +268,8 @@
     height:r(90);
     margin:r(50) auto 0;
     border-radius:r(6);
-    background: #095795;
-    font-size:r(34);
+    background: $btn_color;
+    font-size:$large_font_size;
     color:#fff;
     text-align:center;
     line-height:r(90);
@@ -272,7 +278,7 @@
     margin-top:r(50);
   li{
     padding-left: r(30);
-    font-size:r(30);
+    font-size:$main_font_size;
     color:#333;
     line-height:r(40);
     margin-bottom:r(10);
@@ -294,8 +300,8 @@
     padding:r(25) r(35) r(25) 0;
     position:relative;
   .icon-box{
-    width:r(40);
-    height:r(40);
+    width:r(55);
+    height:r(55);
     float:left;
   img{
     width:100%;
@@ -303,15 +309,15 @@
   }
   .fr-text{
     float:right;
-    font-size:r(28);
-    color:#147fc3;
-    line-height:r(40);
+    font-size:$large_font_size;
+    color:$secondary_text_color;
+    line-height:r(60);
   }
   .nav-name{
     margin-left:r(60);
-    font-size:r(28);
-    color:#666;
-    line-height:r(40);
+    font-size:$large_font_size;
+    color:$primary_text_color;
+    line-height:r(60);
   }
   }
   /*
@@ -336,12 +342,12 @@
     width:r(280);
     height:r(60);
     margin:r(20) r(10) r(30) r(10);
-    font-size:r(28);
-    color:#666;
+    font-size: $main_font_size;
+    color: $primary_text_color;
     text-align:center;
     line-height:r(60);
     p {
-      color:#147fc3;
+      color: $secondary_text_color;
     }
   }
   }
@@ -350,8 +356,8 @@
     position:absolute;
     right:0;
     top:r(32);
-    width:r(14);
-    height:r(28);
+    width:r(20);
+    height:r(36);
   }
 
   .vline{

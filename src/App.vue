@@ -85,8 +85,8 @@
     flex: 1;
     text-align: center;
     text-decoration: none;
-    font-size: r(26);
-    color: grey;
+    font-size: $small_font_size;
+    color: $primary_text_color;
   i {
     font-size: 30px;
   }
@@ -94,10 +94,10 @@
   .router-link-exact-active,
   .router-link-active {
   i {
-    color: #147fc3;
+    color: $secondary_text_color;
   }
   p {
-    color: #147fc3;
+    color: $secondary_text_color;
   }
   }
   }
