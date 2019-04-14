@@ -6,7 +6,7 @@
     <div class="login_container">
       <div class="login_container_shouji">
         <div class="phoneIcon">
-          <img src="../../assets/icon-phonenumber.png"/>
+          <img src="../../assets/blue-phonenumber.png"/>
         </div>
 
         <div class="inputDiv">
@@ -22,7 +22,7 @@
       </div>
       <div class="login_container_jianpan">
         <div class="phoneIcon">
-          <img src="../../assets/icon-password.png"/>
+          <img src="../../assets/blue-password.png"/>
         </div>
         <div class="inputDiv">
           <input type="tel"
@@ -135,7 +135,7 @@
               "code": this.verfifyCode,})
             .then(response => {
             console.log("ok" + response);
-          this.$router.push('/userInfo');
+          this.$router.replace('/userInfo');
           this.$store.dispatch(LOGIN, 'token');
         })
         .catch(error => {
@@ -166,48 +166,52 @@
   }
   }
   .login_container {
-  div, p, span {
-    font-family: Helvetica Neue, Tahoma, Arial;
-  };
-  input {
-    border: none;
-    /*border-left: 1px solid grey;*/
     margin-left: r(40);
-    font-size: r(32);
-  }
-  input:focus {
-    outline: none;
-  }
+    margin-right: r(40);
+    div, p, span {
+      font-family: Helvetica Neue, Tahoma, Arial;
+    }
+    input {
+      border: none;
+      /*border-left: 1px solid grey;*/
+      margin-left: r(30);
+      font-size: r(32);
+    }
+    input:focus {
+        outline: none;
+    }
   .login_container_shouji {
     display: flex;
-    padding: 10px;
+    padding: 5px;
     border-bottom: 1px solid rgb(245, 246, 245);
-  .phoneIcon {
-    width: 10%;
-  img {
-    width: r(40);
-  }
-  }
-  .inputDiv {
-    height: r(60);
-    font-size: r(32)
-  }
-  .icon-shouji {
-    font-size: 20px;
-  }
-  input {
-    width: 80%;
-  }
+    .phoneIcon {
+      width: 5%;
+      img {
+        width: r(55);
+        height: r(50);
+      }
+    }
+    .inputDiv {
+      height: r(60);
+      font-size: r(32)
+    }
+    .icon-shouji {
+      font-size: 20px;
+    }
+    input {
+      width: 80%;
+    }
   }
   .login_container_jianpan {
     display: flex;
-    padding: 10px;
+    padding: 5px;
     border-bottom: 1px solid rgb(245, 246, 245);
   .phoneIcon {
-    width: 10%;
-  img {
-    width: r(40);
-  }
+    width: 5%;
+    img {
+      width: r(55);
+      height: r(50);
+    }
   }
   .inputDiv {
     height: r(60);
@@ -239,7 +243,7 @@
     height:r(90);
     margin:r(20) auto 0;
     border-radius:r(6);
-    background: #095795;
+    background: $secondary_text_color;
     font-size:r(34);
     color:#fff;
     text-align:center;

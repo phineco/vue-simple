@@ -1,23 +1,21 @@
 <template>
   <div v-title data-title="GECA服务" class="bodyContainer" >
 
-    <div class="lineContainer" @click.stop="isDisplayFilter = !isDisplayFilter">
-      <div class="lineHeader">
-        <div class="icon-box">
-          <img src="../../assets/icon-filter.png" alt="">
-        </div>
-        过滤
-      </div>
+    <div class="headerDiv">
+      <div class="back" @click.stop="isDisplayFilter = !isDisplayFilter"><mt-button icon="more"></mt-button></div>
+      报告查询
     </div>
+
     <div class="search-list" >
       <ul class="list" v-if="isDisplayFilter">
       <li @click.stop="openPicker(0)" >
         <div class="icon-box">
+          <img src="../../assets/icon-date.png">
         </div>
         <div style="line-height: 10px">
           <div class="fr-text"><span>{{startDate}}</span>
 
-            <img class="imgArrow" style="width: 12px;height: 18px;" src="../../assets/arrow.png"/></div>
+            <img class="imgArrow" src="../../assets/arrow.png"/></div>
 
           <div class="nav-name" >开始时间</div>
         </div>
@@ -25,20 +23,21 @@
 
       <li @click.stop="openPicker(1)">
         <div class="icon-box">
+          <img src="../../assets/icon-date.png">
         </div>
         <div class="fr-text"><span>{{endDate}}</span>
-          <img class="imgArrow" style="width: 12px;height: 18px;" src="../../assets/arrow.png"/></div>
+          <img class="imgArrow"  src="../../assets/arrow.png"/></div>
         <div class="nav-name">结束时间</div>
       </li>
       </ul>
     </div>
 
-    <div class="line" ></div>
+    <div class="line" v-if="isDisplayFilter"></div>
 
     <div class="lineContainer">
       <div class="lineHeader">
         <div class="icon-box">
-          <img src="../../assets/icon-report.png" alt="">
+          <img src="../../assets/blue-list.png" alt="">
         </div>
         报告列表
       </div>
@@ -53,7 +52,9 @@
         <ul class="list" v-for="(item, index) in reportList" >
 
           <li  @click.stop="gotoDetail(item.id)" >
-
+            <div class="icon-box">
+              <img src="../../assets/file.png" alt="">
+            </div>
             <div class="fr-text">
               <img class="imgArrow" src="../../assets/arrow.png">
             </div>
@@ -110,7 +111,7 @@
         endDate:null,
         currentSelected:null,
         testDate:null,
-        isDisplayFilter:false,
+        isDisplayFilter:true,
 /*
         reportList:[
           {
@@ -230,12 +231,7 @@
     gotoDetail:function(itemId) {
       let str = JSON.stringify(itemId)
       console.log(str);
-      this.$router.push({
-        path:'/reportItem',
-        query:{
-          itemId : itemId
-        }
-      });
+      this.$router.replace('/reportItem?itemId='+itemId);
     }
   },
 }
@@ -258,6 +254,7 @@
 
   .pickerPop /deep/.mint-datetime-action {
     font-size: $main_font_size;
+    color: $secondary_text_color;
   }
   .header{
   font-size: large;
@@ -303,9 +300,10 @@
           }
         }
     .icon-box {
-      width: r(55);
-      height: r(55);
+      width: r(32);
+      height: r(32);
       float: left;
+      padding-right:r(10);
       img {
         width: 100%;
       }
@@ -326,7 +324,7 @@
       }
     }
     .nav-name {
-      margin-left: r(60);
+      margin-left: r(0);
       font-size: $main_font_size;
       color: $primary_text_color;
       line-height: r(60);
@@ -387,7 +385,7 @@
     margin-left: r(60);
     font-size: $main_font_size;
     color: $primary_text_color;
-    line-height: r(40);
+    line-height: r(50);
   }
   }
   }
@@ -403,7 +401,7 @@
   .imgArrow {
     position:absolute;
     right:0;
-    top:r(32);
+    top:r(35);
     width:r(20);
     height:r(36);
   }
@@ -413,4 +411,25 @@
     height:r(30);
     background-color: #f2f2f2;
   }
+
+  .headerDiv{
+    width:100%;
+    height:r(90);
+    background: $btn_color;
+    font-size:$large_font_size;
+    color:#fff;
+    text-align:center;
+    line-height:r(90);
+    background-color: $secondary_text_color;
+  .back /deep/ .mint-button--default{
+    float: right;
+    padding-right: r(10);
+    color:#fff;
+    box-shadow: 0 0 1px $btn_color;
+  }
+  .back /deep/ .mint-button {
+    height:r(80);
+  }
+  }
+
 </style>

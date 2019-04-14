@@ -2,13 +2,9 @@
   <div v-title data-title="GECA服务" id="bodyContent" class="bodyContainer">
     <!--<mt-header fixed title="检测报告列表" class="header"></mt-header>-->
 
-    <div class="lineContainer" @click.stop="isDisplayFilter = !isDisplayFilter">
-      <div class="lineHeader">
-        <div class="icon-box">
-          <img src="../../assets/icon-filter.png" alt="">
-        </div>
-        过滤
-      </div>
+    <div class="headerDiv">
+      <div class="back" @click.stop="isDisplayFilter = !isDisplayFilter"><mt-button icon="more"></mt-button></div>
+      联盟医院
     </div>
 
     <div class="nav-list">
@@ -16,11 +12,12 @@
 
         <li @click.stop="showProvincePicker" v-if="isDisplayFilter">
           <div class="icon-box">
+            <img src="../../assets/icon-address.png">
           </div>
           <div style="line-height: 10px">
             <div class="fr-text"><img class="imgArrow" src="../../assets/arrow.png"/></div>
           <div class="fr-text">{{searchProvince}}</div>
-          <div class="nav-name">省</div>
+          <div class="nav-name">选择省</div>
           </div>
         </li>
 <!--
@@ -38,7 +35,6 @@
         <li :class="cityDefault == index? 'active':''" v-for="(item,index) in cityList" @click="cityDefault = index">{{item}}</li>
       </ul>
 
-      <div class="line" ></div>
 
       <ul class="list">
         <div v-if="cityDefault == 0">
@@ -61,7 +57,7 @@
           </li>
           <li>
             <div class="icon-box">
-              <img src="../../assets/icon-hospital.png" alt="">
+              <img  src="../../assets/icon-hospital.png" alt="">
             </div>
             <div class="fr-text" @click.stop="switchIcon(2)">
               <img src="../../assets/arrow-down.png" ref="show2">
@@ -78,7 +74,7 @@
         </div>
       </ul>
     </div>
-
+    <div class="line" v-if="isDisplayFilter"></div>
 
 
     <div class="mainContainer"  v-infinite-scroll="loadMore"
@@ -89,7 +85,7 @@
 
           <li>
             <div class="icon-box">
-              <img src="../../assets/icon-hospital.png" alt="">
+              <img style="padding-top: 10px" src="../../assets/icon-hospitalization.png" alt="">
             </div>
             <div class="fr-text" @click.stop="displayIcon(index)">
               <img src="../../assets/arrow-down.png" class="iconImg">
@@ -148,7 +144,7 @@
     components: { VDistpicker },
     data () {
       return {
-        isDisplayFilter:false,
+        isDisplayFilter:true,
         show1:false,
         show2:false,
 /*
@@ -527,7 +523,7 @@
   .imgArrow {
     position:absolute;
     right:0;
-    top:r(32);
+    top:r(40);
     width:r(20);
     height:r(36);
   }
@@ -536,5 +532,25 @@
 
     height:r(30);
     background-color: #f2f2f2;
+  }
+
+  .headerDiv{
+    width:100%;
+    height:r(90);
+    background: $btn_color;
+    font-size:$large_font_size;
+    color:#fff;
+    text-align:center;
+    line-height:r(90);
+    background-color: $secondary_text_color;
+  .back /deep/ .mint-button--default{
+    float: right;
+    padding-right: r(10);
+    color:#fff;
+    box-shadow: 0 0 1px $btn_color;
+  }
+  .back /deep/ .mint-button {
+    height:r(80);
+  }
   }
 </style>

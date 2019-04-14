@@ -1,6 +1,6 @@
 <template>
   <div class="bodyContainer" v-title data-title="GECA服务">
-    <div class="info-box" :style="{backgroundImage:'url('+require('assets/main-bg-2.jpeg')+')'}" @click.stop="showBarcode">
+    <div class="info-box">
       <div class="info">
         <div class="user-head">
           <img   v-if="userInfo.photo" v-bind:src="userInfo.photo"/>
@@ -11,12 +11,7 @@
           <p class="phone" v-if="userInfo.mobile">{{userInfo.mobile.substr(0,3)}}****{{userInfo.mobile.substr(-4)}}</p>
         </div>
       </div>
-      <div class="barcodeDiv">
-        <div class="number"><p >{{userInfo.gecaId}}</p></div>
-        <div class="barcodeIcon"><img  src="../../assets/icon-barcode.png"></div>
-      </div>
     </div>
-    <div class="line"></div>
     <div class="bind-tip-box" v-if="!userInfo.mobile">
       <div class="bind-btn" @click.stop="bindingPhone">绑定手机号</div>
       <ul class="tips">
@@ -28,10 +23,17 @@
     </div>
     <div class="nav-list" v-else>
       <ul class="list">
+        <li @click.stop="showBarcode">
+          <div class="icon-box">
+            <img src="../../assets/blue-id-badge.png" alt="">
+          </div>
+          <div class="fr-text">{{userInfo.gecaId}}<img class="imgArrow" src="../../assets/arrow.png"/></div>
+          <div class="nav-name">GECA ID </div>
+        </li>
 
         <li @click.stop="gotoReportList">
           <div class="icon-box">
-            <img src="../../assets/icon-report.png" alt="">
+            <img src="../../assets/blue-file-medical.png" alt="">
           </div>
           <div class="fr-text">{{reportCount}} <img class="imgArrow" src="../../assets/arrow.png"/></div>
           <div class="nav-name">检测报告</div>
@@ -39,18 +41,18 @@
 
         <li>
           <div class="icon-box">
-            <img src="../../assets/icon-appointment.png" alt="">
+            <img src="../../assets/blue-hospital.png" alt="">
           </div>
           <div class="fr-text"></div>
           <div class="nav-name">我的预约</div>
 
           <div class="btn-control">
             <div class="btn-group">
-              <div class="btn-first">预约中 <p>0</p></div>
+              <div class="btn-first"><img src="../../assets/icon-adding.png"/>预约中 <p>0</p></div>
               <div class="vline"></div>
-              <div class="btn-first">预约成功 <p>0</p></div>
+              <div class="btn-first"><img src="../../assets/icon-processing.png"/>预约成功 <p>0</p></div>
               <div class="vline"></div>
-              <div class="btn-first">已完成 <p>0</p></div>
+              <div class="btn-first"><img src="../../assets/icon-finish.png"/>已完成 <p>0</p></div>
             </div>
           </div>
         </li>
@@ -152,22 +154,13 @@
       })
       },
       bindingPhone() {
-        this.$router.push({
-          path:'/login',
-        });
+        this.$router.replace('/login');
       },
       gotoReportList() {
-        this.$router.push({
-          path:'/reportList',
-          query:{
-            count : this.count
-          }
-        });
+        this.$router.replace('/reportList');
       },
       gotoHospitalList() {
-        this.$router.push({
-          path:'/hospitalList',
-        });
+        this.$router.replace('/hospitalList');
       }
     }
   };
@@ -180,7 +173,6 @@
     div, p, span {
       font-family: Helvetica Neue, Tahoma, Arial;
     }
-    padding:r(30) 0;
   }
   .popContainer{
     display: none;
@@ -202,21 +194,20 @@
     }
   }
   .info-box{
-    width:r(690);
-    height:r(300);
+    height:r(200);
     margin:0 auto;
-    background:url(../../assets/userInfo-bg.png) no-repeat ;
+    background-color: $btn_color;
     background-size: 100% 100%;
     padding:r(30);
-    box-sizing:border-box;
-    border-radius:r(8);
     position:relative;
   .info{
     overflow:hidden;
+    padding-left:r(30);
+    padding-top:r(30);
   .user-head{
     float:left;
-    width:r(110);
-    height:r(110);
+    width:r(120);
+    height:r(120);
     border-radius:50%;
     border:1px solid #fff;
   img{
@@ -227,15 +218,15 @@
   }
   .name{
     font-size:$main_font_size;
-    color:$btn_color;
+    color: #ffffff;
     font-weight:bold;
     line-height:r(50);
-    padding:r(30) 0;
-    margin-left:r(130);
+    padding:r(30);
+    margin-left:r(160);
   .phone{
-    margin-top:r(4);
+    margin-top:r(15);
     font-size:$main_font_size;
-    color:$btn_color;
+    color:#ffffff;
   }
   }
   .set-pad{
@@ -299,25 +290,27 @@
     border-bottom:1px solid #f2f2f2;
     padding:r(25) r(35) r(25) 0;
     position:relative;
+    line-height:r(55);
   .icon-box{
     width:r(55);
     height:r(55);
+    padding-top: r(5);
     float:left;
-  img{
-    width:100%;
-  }
+    img{
+      width:100%;
+    }
   }
   .fr-text{
     float:right;
     font-size:$large_font_size;
     color:$secondary_text_color;
-    line-height:r(60);
+    line-height:r(70);
   }
   .nav-name{
-    margin-left:r(60);
+    margin-left:r(70);
     font-size:$large_font_size;
     color:$primary_text_color;
-    line-height:r(60);
+    line-height:r(70);
   }
   }
   /*
@@ -339,7 +332,7 @@
     display:flex;
     line-height:r(60);
   .btn-first{
-    width:r(280);
+    width:r(400);
     height:r(60);
     margin:r(20) r(10) r(30) r(10);
     font-size: $main_font_size;
@@ -349,13 +342,18 @@
     p {
       color: $secondary_text_color;
     }
+    img {
+      width:r(32);
+      height:r(32);
+      padding-right: r(5);
+    }
   }
   }
 
   .imgArrow {
     position:absolute;
     right:0;
-    top:r(32);
+    top:r(40);
     width:r(20);
     height:r(36);
   }

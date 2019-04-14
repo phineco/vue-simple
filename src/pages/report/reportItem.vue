@@ -175,7 +175,7 @@ import { Indicator } from 'mint-ui';
       box-shadow: 0 0 1px $btn_color;
     }
     .back /deep/ .mint-button {
-      height:r(90);
+      height:r(80);
     }
   }
 
