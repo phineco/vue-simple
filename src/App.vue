@@ -6,6 +6,7 @@
     <router-view v-if="!$router.currentRoute.meta.keepAlive" />
     <div class="app_footer"
          v-show="isShowTab">
+      <!--
       <router-link to="/userInfo">
         <i class="iconfont icon-shouye" />
         <p>主页</p>
@@ -17,7 +18,22 @@
       <router-link to="/hospitalList">
         <i class="iconfont icon-wode" />
         <p>预约</p>
-      </router-link>
+      </router-link>-->
+
+      <ul class="choose-city" >
+        <li :class="cityDefault == 0? 'active':''"  @click="cityDefault = 0; goto(0)" >
+        <i class="iconfont icon-shouye" />
+          <p>主页</p>
+       </li>
+        <li :class="cityDefault == 1? 'active':''"  @click="cityDefault = 1; goto(1)">
+          <i class="iconfont icon-tabproducticon" />
+          <p>检测报告</p>
+        </li>
+        <li :class="cityDefault == 2? 'active':''"  @click="cityDefault = 2; goto(2)">
+          <i class="iconfont icon-wode" />
+          <p>预约</p>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -28,8 +44,20 @@
     name: 'app',
     data() {
       return {
-        search: ''
+        search: '',
+        cityDefault:0,
       };
+    },
+    methods: {
+      goto(idx) {
+        if (idx == 0) {
+          this.$router.replace("/userInfo")
+        } else if (idx == 1) {
+          this.$router.replace("/reportList")
+        } else if (idx == 2) {
+          this.$router.replace("/hospitalList")
+        }
+      }
     },
     computed: {
       /**
@@ -67,6 +95,32 @@
   @import 'src/css/style';
   .PB-48 {
     padding-bottom: 56px;
+  }
+
+  .choose-city{
+    overflow:hidden;
+    text-align:center;
+  li{
+    display:inline-block;
+    width:r(150);
+   // border:1px solid $btn_color;
+    height:r(40);
+    font-size:$small_font_size;
+    color: $primary_text_color;
+    text-align:center;
+    line-height:r(40);
+    margin-left:r(60);
+    text-align:center;
+    i{
+      font-size: 1.2rem;
+    }
+    p{
+      padding-bottom: r(10);
+    }
+  }
+  .active{
+    color:$btn_color;;
+  }
   }
 
   .app_footer {
