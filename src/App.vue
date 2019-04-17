@@ -23,7 +23,7 @@
       <ul class="choose-city" >
         <li :class="cityDefault == 0? 'active':''"  @click="cityDefault = 0; goto(0)" >
         <i class="iconfont icon-shouye" />
-          <p>主页</p>
+          <p>个人中心</p>
        </li>
         <li :class="cityDefault == 1? 'active':''"  @click="cityDefault = 1; goto(1)">
           <i class="iconfont icon-tabproducticon" />
@@ -31,7 +31,7 @@
         </li>
         <li :class="cityDefault == 2? 'active':''"  @click="cityDefault = 2; goto(2)">
           <i class="iconfont icon-wode" />
-          <p>预约</p>
+          <p>联盟医院</p>
         </li>
       </ul>
     </div>
@@ -47,6 +47,19 @@
         search: '',
         cityDefault:0,
       };
+    },
+    watch:{
+      $route(to,from){
+        console.log(from.path);
+        console.log(to.path);
+        if(to.path === '/hospitalList') {
+          this.cityDefault = 2;
+        } else if (to.path === '/reportList') {
+          this.cityDefault = 1;
+        } else if (to.path === '/userInfo') {
+          this.cityDefault = 0;
+        }
+      }
     },
     methods: {
       goto(idx) {
