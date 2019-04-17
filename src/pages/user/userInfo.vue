@@ -23,6 +23,7 @@
     </div>
     <div class="nav-list" v-else>
       <ul class="list">
+        <!--
         <li @click.stop="showBarcode">
           <div class="icon-box">
             <img src="../../assets/blue-id-badge.png" alt="">
@@ -38,7 +39,8 @@
           <div class="fr-text">{{reportCount}} <img class="imgArrow" src="../../assets/arrow.png"/></div>
           <div class="nav-name">检测报告</div>
         </li>
-
+        -->
+<!--
         <li>
           <div class="icon-box">
             <img src="../../assets/blue-hospital.png" alt="">
@@ -56,7 +58,21 @@
             </div>
           </div>
         </li>
+        -->
       </ul>
+
+      <div class="examDiv"  v-if="!examId">
+        <div class="scan-btn" @click.stop="scan">扫码报名</div>
+        <p class="examP">注:本次活动以线下现场报名为准</p>
+      </div>
+      <div v-else class="examDiv">
+        <div class="examId">筛查编号: {{registerInfo.examId}}</div>
+        <mt-cell title="姓名"><span >{{registerInfo.name}}</span></mt-cell>
+        <mt-cell title="性别"><span >{{registerInfo.sex}}</span></mt-cell>
+        <mt-cell title="出生日期"><span >{{registerInfo.birthday | formatDate}}</span></mt-cell>
+        <mt-cell title="随访联系电话" v-if="registerInfo.contact"><span >{{registerInfo.contact}}</span></mt-cell>
+        <mt-cell title="报名时间"><span >{{registerInfo.createDate | formatTime}}</span></mt-cell>
+      </div>
 
     </div>
 
@@ -70,6 +86,10 @@
 
 <script>
   import VueBarcode from '@xkeshi/vue-barcode';
+
+  import {formatDate} from '../../js/mUtils'
+  const wx = require("weixin-js-sdk");
+
   export default {
     data() {
       return {
@@ -91,7 +111,10 @@
           width:'2px',//单个条形码的宽度
           height: '55px',
           fontSize: '20px', //字体大小
-        }
+        },
+
+        examId:Vue.$utils.getLocalStorage('examId'),
+        registerInfo:{},
       };
     },
     watch: {
@@ -105,6 +128,16 @@
     components: {
       VueBarcode
     },
+    filters:{
+      formatTime:function (time) {
+        let obj = new Date(time);
+        return formatDate(obj, 'yyyy-MM-dd hh:mm');
+      },
+      formatDate:function (time) {
+        let obj = new Date(time);
+        return formatDate(obj, 'yyyy-MM-dd');
+      }
+    },
     computed: {
       /*
        headImg() {
@@ -115,9 +148,56 @@
        }*/
     },
     mounted() {
+      if (this.$route.query.examId) {
+        this.examId = this.$route.query.examId;
+        Vue.$utils.setLocalStorage('examId', this.examId);
+      }
+
       this.getUserInfo();
+      this.getRegisterInfo();
     },
     methods: {
+      getRegisterInfo() {
+        if(this.examId) {
+          let url = '/f/getRegisterInfo?examId=' + this.examId;
+          this.axios.get(url)
+            .then(response => {
+            this.registerInfo = response.data;
+        })
+        }
+      },
+
+      scan() {
+        let href =  encodeURIComponent(window.location.href.split('#')[0]);
+        let url = "/jsapi?url=" + href;
+        this.axios.get(url)
+          .then(response => {
+          console.log("ok" + response)
+
+        wx.config({
+          appId: response.data.appid, // 必填，公众号的唯一标识
+          timestamp: response.data.timestamp, // 必填，生成签名的时间戳
+          nonceStr: response.data.nonceStr, // 必填，生成签名的随机串
+          signature: response.data.signature,// 必填，签名，见附录1
+          jsApiList: ["scanQRCode"] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+        });
+
+        wx.ready(function () {
+          console.log('ready=');
+          wx.scanQRCode({
+            needResult: 0, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+            scanType: ["qrCode"], // 可以指定扫二维码还是一维码，默认二者都有
+            success: function (res) {
+              //alert("1" + res.resultStr);
+              var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+              console.log('result=' + result);
+              //this.$router.replace("/register?" + result);
+            }
+          });
+        })
+
+      })
+      },
       showBarcode() {
         if (this.userInfo.gecaId) {
           let el = this.$refs.barcodeDiv;
@@ -137,6 +217,7 @@
           this.userInfo = response.data;
 
         //手机号不为空,则取记录总数
+        /*
         if (this.userInfo.mobile) {
           this.axios.post("/f/getReportCount", {"phone":this.phone})
             .then(response => {
@@ -147,6 +228,7 @@
           //MessageBox.alert("查询失败,请重试");
         })
         }
+        */
       })
       .catch(error => {
           console.log("error" + error)
@@ -364,5 +446,35 @@
     width: r(4);
     height: r(70);
     background: #e9e9e9;
+  }
+
+  .examDiv {
+     margin:r(40);
+    .examId {
+      text-align:center;
+      font-size: r(60);
+      margin:r(60);
+    }
+    .scan-btn{
+      width:r(690);
+      height:r(90);
+      margin:r(200) auto 0;
+      border-radius:r(6);
+      background: $btn_color;
+      font-size:$large_font_size;
+      color:#fff;
+      text-align:center;
+      line-height:r(90);
+    }
+    p {
+      color: red;
+      text-align:center;
+      font-size: $large_font_size;
+      margin:r(50) auto 0;
+
+    }
+    span {
+      color: $primary_text_color;
+    }
   }
 </style>
