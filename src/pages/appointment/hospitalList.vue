@@ -196,7 +196,8 @@
       }
     },
     mounted() {
-      this.loadMore();
+      //滚动组件加载时会自动调用一次,不需要这里调用
+      //this.loadMore();
       //document.getElementById("bodyContent").addEventListener("click", this.hideProvincePicker);
     },
     watch: {

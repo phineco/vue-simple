@@ -146,11 +146,12 @@
       }
     },
     mounted() {
-      this.loadMore();
+      //滚动组件加载时会自动调用一次,不需要这里调用
+      //this.loadMore();
     },
     watch: {
       // 如果路由发生变化，再次执行该方法
-      "$route": "loadMore"
+      //"$route": "loadMore"
     },
     methods: {
       openPicker (idx) { // 打开时间选择器
@@ -171,9 +172,13 @@
       dateConfirm () { // 时间选择器确定按钮，并把时间转换成我们需要的时间格式
         console.log(this.currentSelected);
         if (this.currentSelected == 0) {
-          this.startDate = formatDate(this.testDate, 'yyyy-MM-dd hh:mm');
+          if (this.testDate instanceof Date) {
+            this.startDate = formatDate(this.testDate, 'yyyy-MM-dd hh:mm');
+          }
         } else if (this.currentSelected == 1) {
-          this.endDate = formatDate(this.testDate, 'yyyy-MM-dd hh:mm');
+          if (this.testDate instanceof Date) {
+            this.endDate = formatDate(this.testDate, 'yyyy-MM-dd hh:mm');
+          }
         }
         console.log(this.startDate + "--" + this.endDate);
 
