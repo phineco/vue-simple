@@ -327,15 +327,14 @@
           }
         }
 
-
         //this.reportList.concat(response.data);
         console.log(this.hospitalList);
+        this.loading = false;
       }).catch(error => {
           console.log("error" + error)
+        this.loading = false;
         //MessageBox.alert("查询失败,请重试");
       });
-
-        this.loading = false;
       },
     },
   }

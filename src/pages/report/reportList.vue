@@ -8,26 +8,27 @@
 
     <div class="search-list" >
       <ul class="list" v-if="isDisplayFilter">
-      <li @click.stop="openPicker(0)" >
+      <li >
         <div class="icon-box">
           <img src="../../assets/icon-date.png">
         </div>
         <div style="line-height: 10px">
-          <div class="fr-text"><span>{{startDate}}</span>
-
+          <div class="fr-text">
+            <input type="text" onfocus="this.blur()" @click = "setStartDate()" v-bind:value="startDate" placeholder=""/>
             <img class="imgArrow" src="../../assets/arrow.png"/></div>
 
-          <div class="nav-name" >开始时间</div>
+          <div class="nav-name" >起始日期</div>
         </div>
       </li>
 
-      <li @click.stop="openPicker(1)">
+      <li >
         <div class="icon-box">
           <img src="../../assets/icon-date.png">
         </div>
-        <div class="fr-text"><span>{{endDate}}</span>
+        <div class="fr-text">
+          <input type="text" onfocus="this.blur()" @click = "setEndDate()" v-bind:value="endDate" placeholder=""/>
           <img class="imgArrow"  src="../../assets/arrow.png"/></div>
-        <div class="nav-name">结束时间</div>
+        <div class="nav-name">结束日期</div>
       </li>
       </ul>
     </div>
@@ -68,26 +69,6 @@
         <p>未查询到符合条件的检查记录</p>
       </div>
     </div>
-
-
-    <div class="pickerPop" @touchmove.prevent>
-      <mt-datetime-picker
-        ref="picker"
-        type="date"
-        v-model="testDate"
-        lockScroll="true"
-        class="myPicker"
-        year-format="{value}"
-        month-format="{value}"
-        date-format="{value}"
-        hour-format="{value}"
-        minute-format="{value}"
-        second-format="{value}"
-        @confirm="dateConfirm()"
-      >
-      </mt-datetime-picker>
-    </div>
-
   </div>
 </template>
 
@@ -95,6 +76,7 @@
   import {formatDate} from '../../js/mUtils'
   import { DatetimePicker } from 'mint-ui';
   Vue.component(DatetimePicker.name, DatetimePicker);
+  import { Toast } from 'mint-ui';
   import store from '@/store';
   export default {
     data () {
@@ -154,42 +136,38 @@
       //"$route": "loadMore"
     },
     methods: {
-      openPicker (idx) { // 打开时间选择器
-        // 如果已经选过日期，则再次打开时间选择器时，日期回显（不需要回显的话可以去掉 这个判断）
-        this.currentSelected = idx;
-        if (this.currentSelected == 1 && this.endDate) {
-          this.testDate = this.endDate;
-          this.endDate = null;
-        } else if (this.currentSelected == 0 && this.startDate){
-          this.testDate = this.startDate;
-          this.startDate = null;
-        } else {
-          this.testDate = new Date();
+      setStartDate() {
+        this.$picker.show({
+          type:'datePicker',
+          onOk: (date) =>{
+          this.startDate = date;
+          this.queryReport();
         }
-        this.$refs.picker.open();
+        })
+
       },
-
-      dateConfirm () { // 时间选择器确定按钮，并把时间转换成我们需要的时间格式
-        console.log(this.currentSelected);
-        if (this.currentSelected == 0) {
-          if (this.testDate instanceof Date) {
-            this.startDate = formatDate(this.testDate, 'yyyy-MM-dd');
-          }
-        } else if (this.currentSelected == 1) {
-          if (this.testDate instanceof Date) {
-            this.endDate = formatDate(this.testDate, 'yyyy-MM-dd');
-          }
+      setEndDate() {
+        this.$picker.show({
+          type:'datePicker',
+          onOk: (date) =>{
+          this.endDate = date;
+          this.queryReport();
         }
+        })
+      },
+      queryReport() {
         console.log(this.startDate + "--" + this.endDate);
-
         if(this.startDate != null && this.endDate != null) {
+          if(this.startDate > this.endDate) {
+            Toast('起始日期大于结束日期!');
+            return;
+          }
           this.lastPage = false;
           this.pageNum = 0;
           this.reportList = [];
           this.loadMore();
         }
       },
-
       loadMore() {
         if(this.lastPage) {
           return;
@@ -226,13 +204,13 @@
         }
           //this.reportList.concat(response.data);
           console.log(this.reportList);
+        this.loading = false;
         }).catch(error => {
           console.log("error" + error)
           //MessageBox.alert("查询失败,请重试");
+          this.loading = false;
         });
-
-        this.loading = false;
-    },
+      },
     gotoDetail:function(itemId) {
       let str = JSON.stringify(itemId)
       console.log(str);
@@ -323,6 +301,12 @@
         padding-top: r(5);
         padding-right: r(30);
       }
+      input {
+        font-size: $main_font_size;
+        line-height: r(50);
+        border: 1px;
+        width:r(200);
+      }
       img {
         height: r(36);
         width: r(20);
@@ -406,7 +390,7 @@
   .imgArrow {
     position:absolute;
     right:0;
-    top:r(35);
+    top:r(40);
     width:r(20);
     height:r(36);
   }
