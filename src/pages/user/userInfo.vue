@@ -74,7 +74,7 @@
         <div class="cellDiv">
           <mt-cell title="姓名"><span >{{registerInfo.name}}</span></mt-cell>
           <mt-cell title="性别"><span >{{registerInfo.sex}}</span></mt-cell>
-          <mt-cell title="出生日期"><span >{{registerInfo.birthday | formatDate}}</span></mt-cell>
+          <mt-cell title="出生年月"><span >{{registerInfo.birthday | formatDate}}</span></mt-cell>
           <mt-cell title="随访联系电话" v-if="registerInfo.contact"><span >{{registerInfo.contact}}</span></mt-cell>
           <mt-cell title="报名时间"><span >{{registerInfo.createDate | formatTime}}</span></mt-cell>
           <mt-cell></mt-cell>
@@ -143,7 +143,7 @@
       },
       formatDate:function (time) {
         let obj = new Date(time);
-        return formatDate(obj, 'yyyy-MM-dd');
+        return formatDate(obj, 'yyyy-MM');
       }
     },
     computed: {
