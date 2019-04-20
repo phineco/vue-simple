@@ -62,16 +62,23 @@
       </ul>
 
       <div class="examDiv"  v-if="!examId">
+        <div class="title">
+          <div style="text-align: center">2019年全国早期胃癌防治宣传月</div>
+          <div style="text-align: center">筛查活动</div>
+        </div>
         <div class="scan-btn" @click.stop="scan">扫码报名</div>
         <p class="examP">注:本次活动以线下现场报名为准</p>
       </div>
       <div v-else class="examDiv">
         <div class="examId">筛查编号: {{registerInfo.examId}}</div>
-        <mt-cell title="姓名"><span >{{registerInfo.name}}</span></mt-cell>
-        <mt-cell title="性别"><span >{{registerInfo.sex}}</span></mt-cell>
-        <mt-cell title="出生日期"><span >{{registerInfo.birthday | formatDate}}</span></mt-cell>
-        <mt-cell title="随访联系电话" v-if="registerInfo.contact"><span >{{registerInfo.contact}}</span></mt-cell>
-        <mt-cell title="报名时间"><span >{{registerInfo.createDate | formatTime}}</span></mt-cell>
+        <div class="cellDiv">
+          <mt-cell title="姓名"><span >{{registerInfo.name}}</span></mt-cell>
+          <mt-cell title="性别"><span >{{registerInfo.sex}}</span></mt-cell>
+          <mt-cell title="出生日期"><span >{{registerInfo.birthday | formatDate}}</span></mt-cell>
+          <mt-cell title="随访联系电话" v-if="registerInfo.contact"><span >{{registerInfo.contact}}</span></mt-cell>
+          <mt-cell title="报名时间"><span >{{registerInfo.createDate | formatTime}}</span></mt-cell>
+          <mt-cell></mt-cell>
+        </div>
       </div>
 
     </div>
@@ -114,6 +121,7 @@
         },
 
         examId:Vue.$utils.getLocalStorage('examId'),
+        hospitalId:Vue.$utils.getLocalStorage('hospitalId'),
         registerInfo:{},
       };
     },
@@ -153,14 +161,29 @@
         Vue.$utils.setLocalStorage('examId', this.examId);
       }
 
+      if (this.$route.query.hospitalId) {
+        this.hospitalId = this.$route.query.hospitalId;
+        Vue.$utils.setLocalStorage('hospitalId', this.hospitalId);
+
+
+      }
+
       this.getUserInfo();
       this.getRegisterInfo();
     },
     methods: {
       getRegisterInfo() {
         if(this.examId) {
-          let url = '/f/getRegisterInfo?examId=' + this.examId;
-          this.axios.get(url)
+          if (this.hospitalId) {
+
+          } else {
+            this.hospitalId = null;
+          }
+          let url = '/f/getRegisterInfo';
+          this.axios.post(url, {
+              examId:this.examId,
+              hospitalId: this.hospitalId
+          })
             .then(response => {
             this.registerInfo = response.data;
         })
@@ -449,22 +472,17 @@
   }
 
   .examDiv {
-     margin:r(40);
+    .title{
+      margin: r(50) auto 0;
+      div {
+        margin: r(20);
+        color: $secondary_text_color;
+      }
+    }
     .examId {
       text-align:center;
       font-size: r(60);
       margin:r(60);
-    }
-    .scan-btn{
-      width:r(690);
-      height:r(90);
-      margin:r(200) auto 0;
-      border-radius:r(6);
-      background: $btn_color;
-      font-size:$large_font_size;
-      color:#fff;
-      text-align:center;
-      line-height:r(90);
     }
     p {
       color: red;
@@ -473,8 +491,22 @@
       margin:r(50) auto 0;
 
     }
-    span {
-      color: $primary_text_color;
+    .cellDiv{
+      span {
+        color: $primary_text_color;
+      }
     }
+    .scan-btn{
+      width:r(670);
+      height:r(90);
+      margin:r(100) auto 0;
+      border-radius:r(6);
+      background: $btn_color;
+      font-size:$large_font_size;
+      color:#fff;
+      text-align:center;
+      line-height:r(90);
+    }
+
   }
 </style>
