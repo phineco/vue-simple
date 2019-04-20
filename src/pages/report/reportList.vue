@@ -73,7 +73,7 @@
     <div class="pickerPop" @touchmove.prevent>
       <mt-datetime-picker
         ref="picker"
-        type="datetime"
+        type="date"
         v-model="testDate"
         lockScroll="true"
         class="myPicker"
@@ -142,7 +142,7 @@
     filters:{
       formatDate:function (time) {
         let obj = new Date(time);
-        return formatDate(obj, 'yyyy-MM-dd hh:mm');
+        return formatDate(obj, 'yyyy-MM-dd');
       }
     },
     mounted() {
@@ -173,11 +173,11 @@
         console.log(this.currentSelected);
         if (this.currentSelected == 0) {
           if (this.testDate instanceof Date) {
-            this.startDate = formatDate(this.testDate, 'yyyy-MM-dd hh:mm');
+            this.startDate = formatDate(this.testDate, 'yyyy-MM-dd');
           }
         } else if (this.currentSelected == 1) {
           if (this.testDate instanceof Date) {
-            this.endDate = formatDate(this.testDate, 'yyyy-MM-dd hh:mm');
+            this.endDate = formatDate(this.testDate, 'yyyy-MM-dd');
           }
         }
         console.log(this.startDate + "--" + this.endDate);
