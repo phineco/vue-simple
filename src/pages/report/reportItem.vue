@@ -7,59 +7,71 @@
     </div>
 
     <div class="mainContainer">
+       <div class="lineDiv" >
+         <span class="firstSpan">{{reportItem.patientName}}</span>
+         <span class="center">{{reportItem.patientGender}}</span>
+         <span class="secondSpan">{{reportItem.patientAge}}岁</span>
+       </div>
       <div v-if="reportItem.reportName" class="lineDiv" >
-        <span class="firstSpan">报告名称</span>
-        <span class="secondSpan">{{reportItem.reportName}}</span>
+        <span class="firstSpan">报告名称: {{reportItem.reportName}}</span>
+        <span class="secondSpan">检测日期: {{reportItem.testDate | formatDate}}</span>
       </div>
       <div v-else class="lineDiv">
-        <span class="firstSpan">检测编号</span>
-        <span class="secondSpan">{{reportItem.testNo}}</span>
-      </div>
-
-      <div class="lineDiv" >
-        <span class="firstSpan">姓名</span>
-        <span class="secondSpan">{{reportItem.patientName}}</span>
+        <span class="firstSpan">检测编号: {{reportItem.testNo}}</span>
+        <span class="secondSpan">检测日期: {{reportItem.testDate | formatDate}}</span>
       </div>
       <div class="lineDiv">
-        <span class="firstSpan">年龄</span>
-        <span class="secondSpan">{{reportItem.patientAge}}岁</span>
-      </div>
-
-      <div class="lineDiv">
-        <span class="firstSpan">性别</span>
-        <span class="secondSpan">{{reportItem.patientGender}}</span>
-      </div>
-
-      <div class="lineDiv">
-        <span class="firstSpan">PGI浓度值</span>
-        <span class="secondSpan">{{reportItem.vPg1}}</span>
-      </div>
-
-      <div class="lineDiv">
-        <span class="firstSpan" >PGII浓度值</span>
-        <span class="secondSpan">{{reportItem.vPg2}}</span>
-      </div>
-
-      <div class="lineDiv">
-        <span class="firstSpan">G17浓度值</span>
-        <span class="secondSpan">{{reportItem.vG17}}</span>
-      </div>
-
-      <div class="lineDiv">
-        <span class="firstSpan">HP</span>
-        <span class="secondSpan">{{reportItem.vHp}}</span>
-      </div>
-
-      <div class="lineDiv">
-        <span class="firstSpan">检测地点</span>
+        <span class="firstSpan">检测医院</span>
         <span class="secondSpan">{{reportItem.siteName}}</span>
       </div>
-
-      <div class="lineDiv">
-        <span class="firstSpan">检测日期</span>
-        <span class="secondSpan">{{reportItem.testDate | formatDate}}</span>
       </div>
 
+      <div class="line" ></div>
+    <div class="mainContainer">
+
+
+      <div class="row">
+          <div class="first">胃蛋白酶原I(PGI):
+          <span class="value">{{reportItem.vPg1}} {{reportItem.pg1Unit}}</span>
+            <span class="flag" v-if="reportItem.pg1Flag === 'H'">↑</span>
+            <span class="flag" v-if="reportItem.pg1Flag === 'L'">↓</span>
+          </div>
+          <div class="second">参考区间: {{reportItem.pg1Min}}-{{reportItem.pg1Max}} {{reportItem.pg1Unit}}</div>
+        </div>
+      <div>
+
+        <div class="row">
+          <div class="first" >胃蛋白酶原II(PGII):
+            <span class="value">{{reportItem.vPg2}} {{reportItem.pg2Unit}}</span>
+            <span class="flag" v-if="reportItem.pg2Flag === 'H'">↑</span>
+            <span class="flag" v-if="reportItem.pg2Flag === 'L'">↓</span>
+          </div>
+          <div class="second">参考区间: {{reportItem.pg2Min}}-{{reportItem.pg2Max}} {{reportItem.pg2Unit}}</div>
+        </div>
+      </div>
+
+      <div class="row">
+          <div class="first">胃蛋白酶原I/II(PGR):
+            <span class="value">{{reportItem.pgr}} {{reportItem.prgUnit}}</span>
+            <span class="flag" v-if="reportItem.pgrFlag === 'H'">↑</span>
+            <span class="flag" v-if="reportItem.pgrFlag === 'L'">↓</span>
+          </div>
+          <div class="second">参考区间: {{reportItem.pgrMin}}-{{reportItem.pgrMax}} {{reportItem.prgUnit}}</div>
+      </div>
+
+      <div class="row">
+          <div class="first" >胃泌素17(G-17):
+            <span class="value">{{reportItem.vG17}} {{reportItem.v17Unit}}</span>
+            <span class="flag" v-if="reportItem.v17Flag === 'H'">↑</span>
+            <span class="flag" v-if="reportItem.v17Flag === 'L'">↓</span>
+          </div>
+          <div class="second">参考区间: {{reportItem.v17Min}}-{{reportItem.v17Max}} {{reportItem.v17Unit}}</div>
+      </div>
+
+      <div class="lineDiv">
+        <span class="firstSpan">幽门螺杆菌(HP)</span>
+        <span class="secondSpan">{{reportItem.vHp}}</span>
+      </div>
     </div>
 
     <div class="line" ></div>
@@ -67,23 +79,46 @@
     <div class="mainContainer">
 
       <div class="lineDiv">
-        <span class="firstSpan">评分</span>
+        <span class="firstSpan">筛查评分</span>
         <span class="secondSpan">{{reportItem.score}}</span>
       </div>
+      <!--
       <div class="lineDiv">
         <span class="firstSpan">风险</span>
         <span class="secondSpan">{{reportItem.risk}}</span>
       </div>
+      -->
       <div class="suggestionDiv">
         <div class="suggestion">
-          建议
+          综合建议
         </div>
         <div class="textArea">
           {{reportItem.suggestion}}
         </div>
       </div>
-    </div>
 
+    </div>
+    <div class="line" ></div>
+
+    <div class="mainContainer">
+
+
+    <div class="hint">
+      单项检测指标意义:
+      <p>1) 若PGR≤3 提示中、重度胃体萎缩性胃炎。</p>
+      <p>2) 若PGI＜30ug/L 提示胃体萎缩性胃炎。</p>
+      <p>3) 若PGII＞11ug/L 提示胃部炎症。</p>
+      <p>4) 若G-17＜1pmol/L 高酸，提示胃食管反流病；</p>
+      <p>若G-17＞7pmol/L 低酸，提示胃部炎症，有萎缩性胃炎风险。</p>
+    </div>
+    <div class="hint">
+      注意事项:
+      <p>1) 服用PPI类药物后, 胃功能指标通常显著升高, 一般停药2周后可恢复为治疗前水平,</p>
+      <p>若服用PPI类药物后指标升高不明显，则存在萎缩风险。</p>
+      <p>2) 溃疡患者PGI,PGII,G-17三项指标会有一定程度升高。</p>
+    </div>
+    </div>
+    </div>
   </div>
 </template>
 
@@ -124,7 +159,7 @@ import { Indicator } from 'mint-ui';
     filters:{
       formatDate:function (time) {
         let obj = new Date(time);
-        return formatDate(obj, 'yyyy-MM-dd hh:mm');
+        return formatDate(obj, 'yyyy-MM-dd');
       }
     },
     methods: {
@@ -198,10 +233,14 @@ import { Indicator } from 'mint-ui';
     position:relative;
     .firstSpan {
       float: left;
-
     }
     .secondSpan{
       float: right;
+      padding-right: r(10);
+    }
+    .center{
+
+      padding-left: r(300);
     }
   }
   .line{
@@ -227,8 +266,44 @@ import { Indicator } from 'mint-ui';
     }
   }
 
+  .row{
+    position: relative;
+    overflow:hidden;
+    border-bottom:1px solid #f2f2f2;
+    margin:r(5);
+    line-height: r(60);
+    .first{
+      .value{
+        padding-left: r(10);
+      }
+      .flag{
+        float: right;
+        padding-right: r(20);
+      }
+    }
+    .second{
 
+    }
+  }
+
+  .vline{
+    float:left;
+    margin-left: r(30);
+    margin-right: r(30);
+    margin-top: r(10);
+    width: r(4);
+    height: r(70);
+    background: #e9e9e9;
+  }
   .header{
     font-size: large;
+  }
+
+  .hint{
+    margin-top: r(20);
+    p{
+      padding-top: r(10);
+      padding-left: r(20);
+    }
   }
 </style>
