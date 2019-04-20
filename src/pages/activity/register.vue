@@ -21,16 +21,18 @@
         <li>
           <div>
             <div class="fr-text">
-              <input type="text" onfocus="this.blur()" @click = "setDate" v-bind:value="selectedValue" placeholder="请选择出生日期"/>
+              <!--<input type="text" onfocus="this.blur()" @click = "setDate" v-bind:value="selectedValue" placeholder="请选择出生日期"/>-->
+              <input class="year" type="number" v-model="year" v-verify="year"/> 年
+              <input class="month" type="number" v-model="month" v-verify="month"/> 月
             </div>
-            <div class="nav-name" >出生日期</div>
+            <div class="nav-name" >出生年月</div>
           </div>
         </li>
 
 
         <li>
           <div >
-            <div class="fr-text"><input v-model="contact" placeholder="" v-verify="contact"/></div>
+            <div class="fr-text"><input  type="number" v-model="contact" placeholder="" v-verify="contact"/></div>
             <div class="nav-name" >随访联系电话</div>
           </div>
         </li>
@@ -86,8 +88,9 @@
         mobile:null,
         contact:null,
         selectedValue:"1980-01-01",
-        testDate:null,
         examId:null,
+        year:null,
+        month:null
       };
     },
     verify: {
@@ -97,11 +100,37 @@
           message: '姓名不能为空'
         }
       ],
+      year:[
+        'number',
+        {
+          test: 'required',
+          message: '年不能为空'
+        },
+        {
+          min:1900,
+        },
+        {
+          max:2019
+        }
+      ],
+      month:[
+        'number',
+        {
+          test: 'required',
+          message: '月不能为空'
+        },
+        {
+          min:1,
+        },
+        {
+          max:12
+        }
+      ],
       selectedValue: [
         'number',
         {
           test: 'required',
-          message: '出生日期不能为空'
+          message: '出生年月不能为空'
         }
       ],
       contact: [
@@ -124,20 +153,13 @@
       }
     },
     methods: {
-      setDate(){
-        this.$picker.show({
-          type:'datePicker',
-          year:'1980',
-          month:'1',
-          day:'1',
-          onOk: (date) =>{
-          this.selectedValue = date
-      }
-      })},
       register() {
         if (!this.$verify.check()){
           return;
           }
+          this.selectedValue = new Date();
+          this.selectedValue.setFullYear(this.year, this.month - 1, 1);
+
 
           let url = "/f/register"
         this.axios.post(url, {"activityId": 1,
@@ -251,10 +273,19 @@
       padding-top: r(5);
       padding-right: r(30);
     }
-    input {
+    input{
       font-size: $main_font_size;
       line-height: r(50);
       border: 1px;
+
+    }
+    .year {
+      text-align: right;
+      width: r(140);
+    }
+    .month {
+      text-align: right;
+      width: r(80);
     }
   img {
     height: r(36);
