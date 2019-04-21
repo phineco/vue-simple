@@ -81,7 +81,7 @@
     name: '',
     data() {
       return {
-        isDisplay:true,
+        isDisplay:false,
         name: null,
         isMale: false,
         sex:"男",
@@ -175,17 +175,26 @@
           )
           .then(response => {
 
-          MessageBox.alert("保存成功");
+
         this.examId = response.data.examId;
-        this.hospitalId = response.data.hospitalId;
         console.log("ok, id=" + this.examId);
-        this.$router.replace({
-          path:'/userInfo',
-          query:{
-            examId : this.examId,
-            hospitalId: this.hospitalId
-          }
-        });
+        if (this.examId == 0) {
+          MessageBox.alert("请先绑定手机号");
+          this.$router.replace({
+            path:'/userInfo'
+          });
+        } else {
+          MessageBox.alert("保存成功");
+          this.hospitalId = response.data.hospitalId;
+          this.$router.replace({
+            path:'/userInfo',
+            query:{
+              examId : this.examId,
+              hospitalId: this.hospitalId
+            }
+          });
+        }
+
       }).catch(error => {
           console.log("error" + error)
         MessageBox.alert("保存失败,请重试");
