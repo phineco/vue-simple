@@ -74,7 +74,7 @@
     "component": "/user/userInfo",
     "meta": {
       "requireAuth": true,
-      "keepAlive": true
+      "keepAlive": false
     }
   },
   {
@@ -84,7 +84,17 @@
     "component": "/appointment/hospitalList",
     "meta": {
       "requireAuth": true,
-      "keepAlive": true
+      "keepAlive": false
+    }
+  },
+  {
+    "path": "/register",
+    "name": "register",
+    "title": "活动",
+    "component": "/activity/register",
+    "meta": {
+      "requireAuth": true,
+      "keepAlive": false
     }
   }
 ]
