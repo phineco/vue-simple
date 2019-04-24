@@ -61,7 +61,7 @@
         -->
       </ul>
 
-      <div class="examDiv"  v-if="!examId">
+      <div class="examDiv"  v-if="examId == 0">
         <div class="title">
           <div style="text-align: center">2019年全国早期胃癌防治宣传月</div>
           <div style="text-align: center">筛查活动</div>
@@ -120,8 +120,8 @@
           fontSize: '20px', //字体大小
         },
 
-        examId:Vue.$utils.getLocalStorage('examId'),
-        hospitalId:Vue.$utils.getLocalStorage('hospitalId'),
+        examId:0,
+        hospitalId:null,
         registerInfo:{},
       };
     },
@@ -173,6 +173,7 @@
     },
     methods: {
       getRegisterInfo() {
+        /*
         if(this.examId) {
           if (this.hospitalId) {
 
@@ -188,6 +189,13 @@
             this.registerInfo = response.data;
         })
         }
+        */
+        let url = '/f/getRegisterInfo';
+        this.axios.post(url, {})
+          .then(response => {
+          this.registerInfo = response.data;
+          this.examId = this.registerInfo.examId;
+      })
       },
 
       scan() {
