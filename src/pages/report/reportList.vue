@@ -74,8 +74,6 @@
 
 <script>
   import {formatDate} from '../../js/mUtils'
-  import { DatetimePicker } from 'mint-ui';
-  Vue.component(DatetimePicker.name, DatetimePicker);
   import { Toast } from 'mint-ui';
   import store from '@/store';
   export default {

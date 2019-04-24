@@ -124,7 +124,6 @@
 
 <script>
 import {formatDate} from '../../js/mUtils'
-import { Indicator } from 'mint-ui';
   export default {
     data () {
       return {
@@ -168,10 +167,6 @@ import { Indicator } from 'mint-ui';
       }
     },
     create() {
-      Indicator.open({
-        text: 'Loading...',
-        spinnerType: 'fading-circle'
-      });
     },
     mounted() {
       console.log(this.$route.query.itemId);
@@ -181,7 +176,6 @@ import { Indicator } from 'mint-ui';
         .then(response => {
         this.reportItem = response.data;
         console.log("ok" + response.msg)
-        Indicator.close();
 
     }).catch(error => {
         console.log("error" + error)
