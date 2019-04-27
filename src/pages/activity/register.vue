@@ -8,13 +8,19 @@
       <ul class="list">
         <li >
           <div>
-            <div class="fr-text"><input v-model="name" placeholder="请输入姓名" v-verify="name"/></div>
+            <div class="fr-text"><input v-model="name" placeholder="请输入姓名" v-verify="name" maxlength="10"/></div>
             <div class="nav-name" >姓名</div>
           </div>
           </li>
         <li>
           <div>
-            <div class="fr-text"><mt-switch :class='getGender' v-model='isMale'>{{sex}}</mt-switch></div>
+            <div class="">
+              <div class="fruit">
+
+                <label class="test-label"><input class="test-radio" type="radio" v-model="sex" value="男" name="radio"><span class="test-radioInput1"></span>男</label>
+                <label class="test-label"><input class="test-radio" type="radio" v-model="sex" value="女" name="radio"><span class="test-radioInput2"></span>女</label>
+              </div>
+              </div>
             <div class="nav-name" >性别</div>
           </div>
         </li>
@@ -22,8 +28,8 @@
           <div>
             <div class="fr-text">
               <!--<input type="text" onfocus="this.blur()" @click = "setDate" v-bind:value="selectedValue" placeholder="请选择出生日期"/>-->
-              <input class="year" type="number" v-model="year" v-verify="year"/> 年
-              <input class="month" type="number" v-model="month" v-verify="month"/> 月
+              <input class="year" type="number" v-model="year" v-verify="year" oninput="if(value.length>4)value=value.slice(0,4)"/> 年
+              <input class="month" type="number" v-model="month" v-verify="month" oninput="if(value.length>2)value=value.slice(0,2)"/> 月
             </div>
             <div class="nav-name" >出生年月</div>
           </div>
@@ -84,13 +90,14 @@
         isDisplay:false,
         name: null,
         isMale: false,
-        sex:"男",
+        sex: null,
         mobile:null,
         contact:null,
         selectedValue:"1980-01-01",
         examId:null,
         year:null,
-        month:null
+        month:null,
+        options:[{label:'男', value:'男'}, {label:'女', value:'女'}]
       };
     },
     verify: {
@@ -139,24 +146,40 @@
     },
     mounted() {
       if (getCookieByName("mxgs_token") != "") {
-        this.isDisplay = true;
-      }
-    },
-    computed: {
-      getGender: function() {
-        if (this.isMale == true) {
-          this.sex = "女";
-        } else {
-          this.sex = "男";
-        }
+        this.getRegisterInfo();
+      } else {
 
       }
     },
+    computed: {
+    },
     methods: {
+      getRegisterInfo() {
+        let url = '/f/getRegisterInfo';
+        this.axios.post(url, {})
+          .then(response => {
+          this.registerInfo = response.data;
+           if (this.registerInfo.examId != 0) {
+             MessageBox.alert("您已经报过名");
+             this.$router.replace({
+               path:'/userInfo'
+             });
+           } else {
+             this.isDisplay = true;
+           }
+
+      })
+      },
       register() {
         if (!this.$verify.check()){
           return;
           }
+
+        if(this.sex == null) {
+          Toast("请选择性别");
+          return;
+        }
+
           this.selectedValue = new Date();
           this.selectedValue.setFullYear(this.year, this.month - 1, 1);
 
@@ -284,7 +307,7 @@
     }
     input{
       font-size: $main_font_size;
-      line-height: r(50);
+      line-height: r(45);
       border: 1px;
 
     }
@@ -319,6 +342,58 @@
       padding: r(10);
       font-size: $main_font_size
     }
+  }
+
+  .fruit{
+    float: right;
+    font-size: $main_font_size;
+    line-height: r(60);
+  }
+  .test-label{
+    padding-left: r(30);
+    display:inline-block
+  }
+  .test-radio{display:none}
+  .test-radioInput1{
+    background:url('../../assets/icon_RadioButtonUnse.png') no-repeat;
+    background-size:100% 100%;
+    -moz-background-size:100% 100%;
+    display:inline-block;
+    height: r(45);
+    margin-right:r(20);
+    vertical-align:middle;
+    width:r(45);
+  }
+  .test-radio:checked+
+  .test-radioInput1{
+    background:url('../../assets/icon_RadioButtonSele.png') no-repeat;
+    background-size:100% 100%;
+    -moz-background-size:100% 100%;
+    display:inline-block;
+    vertical-align:middle;
+    margin-right:r(20);
+    height:r(45);
+    width:r(45);
+  }
+
+  .test-radioInput2{
+    background:url('../../assets/icon_RadioButtonUnse.png') no-repeat;
+    background-size:100% 100%;-moz-background-size:100% 100%;
+    display:inline-block;
+    height: r(45);
+    margin-right:r(20);
+    vertical-align:middle;
+    width:r(45);
+  }
+  .test-radio:checked+
+  .test-radioInput2{
+    background:url('../../assets/icon_RadioButtonSele.png') no-repeat;
+    background-size:100% 100%;-moz-background-size:100% 100%;
+    display:inline-block;
+    vertical-align:middle;
+    margin-right:r(20);
+    height:r(45);
+    width:r(45);
   }
 
 </style>
