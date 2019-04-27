@@ -1,5 +1,5 @@
 <template>
-  <div class="bodyContainer" v-title data-title="GECA服务">
+  <div class="bodyContainer" v-title data-title="GECA服务" v-if="loaded">
     <div class="info-box">
       <div class="info">
         <div class="user-head">
@@ -96,7 +96,6 @@
 
   import {formatDate} from '../../js/mUtils'
   const wx = require("weixin-js-sdk");
-
   export default {
     data() {
       return {
@@ -119,7 +118,7 @@
           height: '55px',
           fontSize: '20px', //字体大小
         },
-
+        loaded:false,
         examId:0,
         hospitalId:null,
         registerInfo:{},
@@ -156,45 +155,16 @@
        }*/
     },
     mounted() {
-      if (this.$route.query.examId) {
-        this.examId = this.$route.query.examId;
-        Vue.$utils.setLocalStorage('examId', this.examId);
-      }
-
-      if (this.$route.query.hospitalId) {
-        this.hospitalId = this.$route.query.hospitalId;
-        Vue.$utils.setLocalStorage('hospitalId', this.hospitalId);
-
-
-      }
-
       this.getUserInfo();
-      this.getRegisterInfo();
     },
     methods: {
       getRegisterInfo() {
-        /*
-        if(this.examId) {
-          if (this.hospitalId) {
-
-          } else {
-            this.hospitalId = null;
-          }
-          let url = '/f/getRegisterInfo';
-          this.axios.post(url, {
-              examId:this.examId,
-              hospitalId: this.hospitalId
-          })
-            .then(response => {
-            this.registerInfo = response.data;
-        })
-        }
-        */
         let url = '/f/getRegisterInfo';
         this.axios.post(url, {})
           .then(response => {
           this.registerInfo = response.data;
           this.examId = this.registerInfo.examId;
+          this.loaded = true;
       })
       },
 
@@ -246,6 +216,7 @@
         this.axios.post(url, {})
           .then(response => {
           this.userInfo = response.data;
+          this.getRegisterInfo();
 
         //手机号不为空,则取记录总数
         /*
@@ -287,6 +258,7 @@
       font-family: Helvetica Neue, Tahoma, Arial;
     }
   }
+
   .popContainer{
     display: none;
     z-index:100;
